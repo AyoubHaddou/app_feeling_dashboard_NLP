@@ -1,5 +1,6 @@
 I. Application dashboard pour coach des sentiments 
     site streamlit : 
+    
         - User coach : view of all patients : 
                          id :      
                         password :
