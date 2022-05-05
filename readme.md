@@ -1,6 +1,6 @@
 I. Application dashboard pour coach des sentiments 
     site streamlit : 
-    
+
         - User coach : view of all patients : 
                          id :      
                         password :
@@ -11,6 +11,7 @@ I. Application dashboard pour coach des sentiments
 
 
 II. Modele de machine learning entrainée : 
+
     - model 1 : Scikit-learn 
     - model 2 : Keras 
     - model 3 : TextHero et FastText 
