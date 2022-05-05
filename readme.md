@@ -1,3 +1,5 @@
+# Classification des sentiments
+
 I. Application dashboard pour coach des sentiments 
 
     Lien vers le site streamlit : 
@@ -13,6 +15,10 @@ I. Application dashboard pour coach des sentiments
 
 
 II. Modele de machine learning entrainée : 
+
+    Jeu de donnée Kaggle :  https://www.kaggle.com/datasets/ishantjuyal/emotions-in-text
+
+    Data augmentation : https://data.world/crowdflower/sentiment-analysis-in-text
 
     - model 1 : Scikit-learn 
     - model 2 : Keras 
