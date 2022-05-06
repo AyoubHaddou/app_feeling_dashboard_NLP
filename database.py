@@ -16,3 +16,5 @@ CREATE TABLE utilisateur (
     Statut VARCHAR(10)
     );
 """
+
+sql = "INSERT INTO utilisateur (nom,prenom,email,date_naissance,ville,code_postal,Statut) VALUES (Balboa,Rocky,balboarocky@coaching.com,1976-11-21,New York, 1624,Administrateur)"
