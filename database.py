@@ -38,18 +38,13 @@ cur.execute(create_script)
 
 
 # insertion dans la base de donnée 
-insert_script = 'INSERT INTO utilisateur (nom,prenom,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+insert_script = 'INSERT INTO utilisateur (nom,prenom,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
 insert_values = 
 for record in insert_values:
     cur.execute(insert_script,record)
 cur.execute('SELECT * FROM utilisateur')
 for record in cur.fetchall():
     print(record['name'],record['salary'])
-
-
-# mise à jour de la base de données 
-update_script ='UPDATE utilisateur SET salary =  '
-cur.execute(update_script)
 
 
 #supprimer élément de la base de donnée
