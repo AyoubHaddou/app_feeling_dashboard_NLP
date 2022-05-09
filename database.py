@@ -20,8 +20,6 @@ try :
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 
-
-
 # création de la base de donnée
 create_script = """ CREATE TABLE utilisateur ( 
                     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,  
@@ -59,7 +57,7 @@ delete_script = 'DELETE FROM employee WHERE name = %s'
 delete_record = ('',)
 cur.execute(delete_script, delete_record)
 
-# jsp 
+# Affichage  
 cur.execute('SELECT * FROM utilisateur')
 for record in cur.fetchall():
     print(record['name'],record['salary'])
