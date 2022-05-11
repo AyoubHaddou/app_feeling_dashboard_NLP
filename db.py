@@ -1,7 +1,6 @@
 import sqlite3
 
 con = sqlite3.connect('coach_db')
-
 cur = con.cursor()
 
 def create_table():
