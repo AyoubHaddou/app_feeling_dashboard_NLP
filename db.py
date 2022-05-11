@@ -1,30 +1,11 @@
-from distutils.log import error
-import imp
-from readline import insert_text
-from numpy import insert, reciprocal
-import psycopg2
-import psycopg2.extras 
-from requests import delete
+import sqlite3
 
+con = sqlite3.connect('coach_db')
 
-conn = psycopg2.connect(
-    host="localhost",
-    database="coachDB",
-    user="postgres",
-    password="Abcd1234")
+cur = con.cursor()
 
-cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-
-# Create table statement
-
-sqlCreateDatabase = "create database coachDB;"
-# Create a table in PostgreSQL database
-
-cur.execute(sqlCreateDatabase);
-
-
-def create_db():
-    create_script = """ CREATE TABLE utilisateur IF NOT EXIST ( 
+def create_table():
+    cur.execute (""" CREATE TABLE utilisateur IF NOT EXIST ( 
                     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,  
                     nom VARCHAR(100), 
                     prenom VARCHAR(100), 
@@ -36,14 +17,11 @@ def create_db():
                     Texte_du_jour VARCHAR(500), 
                     Emotion_majoritaire VARCHAR(20), 
                     Statut VARCHAR(10)
-                    ) """
-    cur.execute(create_script)
-
+                    ) """)
 
 
 def insert_user(nom,prenom,record,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut):
     insert_script = f'INSERT INTO utilisateur VALUES {nom,prenom,record,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut}'
-    conn.commit()
     cur.execute(insert_script)
 
 def delete_db_element(nom):
@@ -52,7 +30,6 @@ def delete_db_element(nom):
 
 def admin_display():
     cur.execute('SELECT * FROM utilisateur')
-    conn.commit()
        
 def user_display():
     cur.execute('SELECT')
