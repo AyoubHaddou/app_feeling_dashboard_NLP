@@ -1,27 +1,24 @@
 from distutils.log import error
-from numpy import insert
+import imp
+from readline import insert_text
+from numpy import insert, reciprocal
 import psycopg2
+import psycopg2.extras 
 from requests import delete
+import sqlite3
 
 hostname = 'localhost123'
 database = 'demo'
-username = 'postgres'
-pwd = 'admin'
+username = 'mr_zen'
+pwd = 'rockybalboa'
 port_id = 5432
 
-try : 
-    conn = psycopg2.connect(
-        host = hostname
-        database = database
-        username = username
-        port_id = port_id
-    )
 
-cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor) 
 
 
 # création de la base de donnée
-create_script = """ CREATE TABLE utilisateur ( 
+create_script = """ CREATE TABLE utilisateur IF NOT EXIST ( 
                     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,  
                     nom VARCHAR(100), 
                     prenom VARCHAR(100), 
@@ -36,36 +33,29 @@ create_script = """ CREATE TABLE utilisateur (
                     ) """
 cur.execute(create_script)
 
-
-# insertion dans la base de donnée 
-insert_script = 'INSERT INTO utilisateur (nom,prenom,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
-insert_values = 
-for record in insert_values:
-    cur.execute(insert_script,record)
-cur.execute(insert_script)
-for record in cur.fetchall():
-    print(record['name'],record['salary'])
-
-
 #supprimer élément de la base de donnée
 delete_script = 'DELETE FROM utilisateurs WHERE name = %s'
 cur.execute(delete_script)
 
-# Affichage  
+# Affichage pour admin
 cur.execute('SELECT * FROM utilisateur')
 for record in cur.fetchall():
-    print(record['name'],record['salary'])
-
+    print(record['nom'],record['prenom'],record['email'],record['data_naissance'],record['ville'],record['code_postal'],record['date_du_texte'],record['Texte_du_jour'],record['Emotion_majoritaire'],record['Statut'])
     conn.commit()
 
-#Mise à jour 
-UPDATE 
+#Affichage utilisateur 
+cur.execute('SELECT')
 
+#Mise à jour utilisateur
+update_script = 'UPDATE utilisateur SET Texte_du_jour = %s WHERE Texte_du_jour = %s'
+cur.execute(update_script)
 
-except Exception as error:
-    print(error)
-finally:
-    if cur is not None: 
-        cur.close()
-    if cur is not None:
-        conn.close()
+#Insertion dans la base de donnée client 
+insert_texte = 'INSERT INTO utilisateur (Texte_du_jour) VALUES (%s)'
+cur.execute(insert_texte)
+
+def insert_user(nom,prenom,record,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut):
+    # insertion dans la base de donnée admin  
+    insert_script = f'INSERT INTO utilisateur VALUES {nom,prenom,record,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut}'
+    conn.commit()
+    cur.execute(insert_script)
