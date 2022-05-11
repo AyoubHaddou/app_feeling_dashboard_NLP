@@ -42,15 +42,14 @@ insert_script = 'INSERT INTO utilisateur (nom,prenom,email,data_naissance,ville,
 insert_values = 
 for record in insert_values:
     cur.execute(insert_script,record)
-cur.execute('SELECT * FROM utilisateur')
+cur.execute(insert_script)
 for record in cur.fetchall():
     print(record['name'],record['salary'])
 
 
 #supprimer élément de la base de donnée
-delete_script = 'DELETE FROM employee WHERE name = %s'
-delete_record = ('',)
-cur.execute(delete_script, delete_record)
+delete_script = 'DELETE FROM utilisateurs WHERE name = %s'
+cur.execute(delete_script)
 
 # Affichage  
 cur.execute('SELECT * FROM utilisateur')
@@ -58,6 +57,9 @@ for record in cur.fetchall():
     print(record['name'],record['salary'])
 
     conn.commit()
+
+#Mise à jour 
+UPDATE 
 
 
 except Exception as error:
