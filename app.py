@@ -6,8 +6,8 @@ import streamlit_authenticator as stauth
 
 ## Home 
 
-st.header('BALBOA COACHING')
-st.image ('motivation.jpeg')
+st.header("Mr zen coaching")
+st.image ('coach.gif')
 
 names = ['John Smith','Rebecca Briggs']
 usernames = ['jsmith','rbriggs']
