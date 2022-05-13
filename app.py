@@ -33,7 +33,7 @@ def create_db():
     db.close()
 
 
-# create_db()
+create_db()
 
 
 def insert_user(nom,prenom,record,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut):
