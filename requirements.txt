@@ -1,6 +1,4 @@
 dataclasses
-streamlit 
-streamlit_authenticator
 pandas
 sqlite3
 requests
