@@ -29,7 +29,6 @@ def create_table():
                     ) ; """
     cur.execute(create_script)
     db.commit()
-    db.close()
 
 
 create_table()
