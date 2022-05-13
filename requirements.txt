@@ -2,3 +2,7 @@ dataclasses
 streamlit 
 streamlit_authenticator
 pandas
+psycopg2
+requests
+numpy
+readline

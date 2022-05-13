@@ -1,5 +1,3 @@
-from distutils.log import error
-import imp
 from readline import insert_text
 from numpy import insert, reciprocal
 import psycopg2
