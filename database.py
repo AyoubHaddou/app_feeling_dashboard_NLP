@@ -1,27 +1,30 @@
 from distutils.log import error
-from numpy import insert
+import imp
+from readline import insert_text
+from numpy import insert, reciprocal
 import psycopg2
+import psycopg2.extras 
 from requests import delete
 
-hostname = 'localhost123'
-database = 'demo'
-username = 'postgres'
-pwd = 'admin'
-port_id = 5432
 
-try : 
-    conn = psycopg2.connect(
-        host = hostname
-        database = database
-        username = username
-        port_id = port_id
-    )
+conn = psycopg2.connect(
+    host="localhost",
+    database="coachDB",
+    user="postgres",
+    password="Abcd1234")
 
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
+# Create table statement
 
-# création de la base de donnée
-create_script = """ CREATE TABLE utilisateur ( 
+sqlCreateDatabase = "create database coachDB;"
+# Create a table in PostgreSQL database
+
+cur.execute(sqlCreateDatabase);
+
+
+def create_db():
+    create_script = """ CREATE TABLE utilisateur IF NOT EXIST ( 
                     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,  
                     nom VARCHAR(100), 
                     prenom VARCHAR(100), 
@@ -34,36 +37,30 @@ create_script = """ CREATE TABLE utilisateur (
                     Emotion_majoritaire VARCHAR(20), 
                     Statut VARCHAR(10)
                     ) """
-cur.execute(create_script)
+    cur.execute(create_script)
 
 
-# insertion dans la base de donnée 
-insert_script = 'INSERT INTO utilisateur (nom,prenom,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
-insert_values = 
-for record in insert_values:
-    cur.execute(insert_script,record)
-cur.execute('SELECT * FROM utilisateur')
-for record in cur.fetchall():
-    print(record['name'],record['salary'])
 
-
-#supprimer élément de la base de donnée
-delete_script = 'DELETE FROM employee WHERE name = %s'
-delete_record = ('',)
-cur.execute(delete_script, delete_record)
-
-# Affichage  
-cur.execute('SELECT * FROM utilisateur')
-for record in cur.fetchall():
-    print(record['name'],record['salary'])
-
+def insert_user(nom,prenom,record,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut):
+    insert_script = f'INSERT INTO utilisateur VALUES {nom,prenom,record,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut}'
     conn.commit()
+    cur.execute(insert_script)
 
+def delete_db_element(nom):
+    delete_script = f'DELETE FROM utilisateurs WHERE name = {nom}'
+    cur.execute(delete_script)
 
-except Exception as error:
-    print(error)
-finally:
-    if cur is not None: 
-        cur.close()
-    if cur is not None:
-        conn.close()
+def admin_display():
+    cur.execute('SELECT * FROM utilisateur')
+    conn.commit()
+       
+def user_display():
+    cur.execute('SELECT')
+
+def update_user(Texte_du_jour):
+    update_script = f'UPDATE utilisateur SET Texte_du_jour = {Texte_du_jour} WHERE Texte_du_jour = {Texte_du_jour}'
+    cur.execute(update_script)
+
+def day_text(Texte_du_jour):
+    insert_texte = f'INSERT INTO utilisateur (Texte_du_jour) VALUES {Texte_du_jour}'
+    cur.execute(insert_texte)

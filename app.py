@@ -5,21 +5,24 @@ import streamlit_authenticator as stauth
 
 ## Home 
 
-st.header('BALBOA COACHING')
-st.image ('motivation.jpeg')
+#col1, col2, col3 = st.columns(3)
 
-names = ['John Smith','Rebecca Briggs']
-usernames = ['jsmith','rbriggs']
-passwords = ['123','456']
+#with col2:
+#    st.image('coach.gif')
 
-hashed_passwords = stauth.Hasher(passwords).generate()
+#names = ['John Smith','Rebecca Briggs']
+#usernames = ['jsmith','rbriggs']
+#passwords = ['123','456']
 
-authenticator = stauth.Authenticate(names,usernames,hashed_passwords,
-    'some_cookie_name','some_signature_key',cookie_expiry_days=30)
+#hashed_passwords = stauth.Hasher(passwords).generate()
 
-name, authentication_status, username = authenticator.login('Login','main')
+#authenticator = stauth.Authenticate(names,usernames,hashed_passwords,
+#    'some_cookie_name','some_signature_key',cookie_expiry_days=30)
 
-## https://towardsdatascience.com/how-to-add-a-user-authentication-service-in-streamlit-a8b93bf02031 : authentification 
+#name, authentication_status, username = authenticator.login('Login','main')
+
+#st.markdown('by M.Zen coaching ')
+
 
 
 ### Admin 
@@ -28,28 +31,36 @@ name, authentication_status, username = authenticator.login('Login','main')
 #st.sidebar.text('Prénom : Rocky')
 #st.sidebar.selectbox('Que souhaitez vous faire ?', ['Suivis patient', 'Gestion clientèle', 'Statistique générale'])
 
-#st.header('BALBOA COACHING')
-#st.image ('motivation.jpeg')
+#col1, col2, col3 = st.columns(3)
+
+#with col2:
+#    st.image ('motivation.jpeg')
 
 
 
 #### Client 
 
-#st.sidebar.text('Nom : Creed')
-#st.sidebar.text('Prénom : Apollo')
-#selection = st.sidebar.selectbox('Que souhaitez vous faire ?', ['Rédiger votre texte du jour', 'Modifier votre texte du jour', 'Consulter vos texte', 'Consulter vos progressions'])
+col1, col2, col3 = st.columns(3)
 
-#st.header('BALBOA COACHING')
-#st.image ('motivation.jpeg')
+with col2:
+    st.image ('motivation.jpeg')
 
-#if selection == 'Rédiger votre texte du jour':
-#    WordOfDay = st.text_area('Ecrivez votre texte du jour :')
+st.sidebar.text('Nom : Creed')
+st.sidebar.text('Prénom : Apollo')
+selection = st.sidebar.selectbox('Que souhaitez vous faire ?', ['Rédiger votre texte du jour', 'Modifier votre texte du jour', 'Consulter vos texte', 'Consulter vos progressions'])
 
-#if selection == 'Modifier votre texte du jour':
-#    st.text('mr')
 
-#if selection == 'Consulter vos texte':
-#    st.text('hxa')
 
-#if selection == 'Consulter vos progressions':
-#    st.text('zfoczd')
+if selection == 'Rédiger votre texte du jour':
+    WordOfDay = st.text_area('Ecrivez votre texte du jour :')
+    st.button('Publier')
+
+if selection == 'Modifier votre texte du jour':
+    WordOfDay = st.text_area('Ecrivez votre texte du jour :')
+    st.button('Publier')
+
+if selection == 'Consulter vos texte':
+    st.text('hxa')
+
+if selection == 'Consulter vos progressions':
+    st.text('zfoczd')
