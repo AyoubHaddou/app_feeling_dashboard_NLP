@@ -48,9 +48,8 @@ def delete_db_element(nom):
     db.close()
 
 def admin_display():
-    cur.execute('SELECT * FROM utilisateur;')
-    db.commit()
-    db.close()
+    action = cur.execute('SELECT * FROM utilisateur;')
+    return action 
        
 def user_display():
     cur.execute('SELECT')
