@@ -7,13 +7,17 @@ from numpy import insert, reciprocal
 from requests import delete
 
 
-db = sqlite3.connect('coach_db.db')
-cur = db.cursor()
 
 
+
+def login_db():
+    db = sqlite3.connect('coach_db.db')
+    cur = db.cursor()
+    return(db, cur)
 # Create table statement
 
 def create_table():
+    db, cur = login_db()
     create_script = """CREATE TABLE IF NOT EXISTS utilisateur ( 
                     id INT PRIMARY KEY NOT NULL,  
                     nom VARCHAR(100), 
@@ -29,39 +33,46 @@ def create_table():
                     ) ; """
     cur.execute(create_script)
     db.commit()
+    db.close()
 
 
 create_table()
 
 
 def insert_user(nom,prenom,record,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut):
+    db, cur = login_db()
     insert_script = f'INSERT INTO utilisateur VALUES {nom,prenom,record,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut}'
     cur.execute(insert_script)
     db.commit()
     db.close()
 
 def delete_db_element(nom):
+    db, cur = login_db()
     delete_script = f'DELETE FROM utilisateur WHERE name = {nom};'
     cur.execute(delete_script)
     db.commit()
     db.close()
 
 def admin_display():
+    db, cur = login_db()
     action = cur.execute('SELECT * FROM utilisateur;')
+    db.close()
     return action 
        
 def user_display():
+    db, cur = login_db()
     cur.execute('SELECT')
-    db.commit()
     db.close()
 
 def update_user(Texte_du_jour):
+    db, cur = login_db()
     update_script = f'UPDATE utilisateur SET Texte_du_jour = {Texte_du_jour} WHERE Texte_du_jour = {Texte_du_jour}'
     cur.execute(update_script)
     db.commit()
     db.close()
 
 def day_text(Texte_du_jour):
+    db, cur = login_db()
     insert_texte = f'INSERT INTO utilisateur (Texte_du_jour) VALUES {Texte_du_jour}'
     cur.execute(insert_texte)
     db.commit()
