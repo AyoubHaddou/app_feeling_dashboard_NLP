@@ -15,7 +15,7 @@ cur = connection.cursor()
 sqlCreateDatabase = "create database coachDB;"
 # Create a table in PostgreSQL database
 
-cur.execute(sqlCreateDatabase);
+cur.execute(sqlCreateDatabase)
 
 
 def create_db():
