@@ -1,17 +1,14 @@
 from readline import insert_text
+import sqlite3
 from numpy import insert, reciprocal
-import psycopg2
-import psycopg2.extras 
+import sqlite3
+from psycopg2 import connection
 from requests import delete
 
 
-conn = psycopg2.connect(
-    host="localhost",
-    database="coachDB",
-    user="postgres",
-    password="Abcd1234")
+conn = sqlite3.connect('coach_db')
+cur = connection.cursor()
 
-cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 # Create table statement
 
@@ -41,7 +38,7 @@ def create_db():
 
 def insert_user(nom,prenom,record,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut):
     insert_script = f'INSERT INTO utilisateur VALUES {nom,prenom,record,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut}'
-    conn.commit()
+    connection.commit()
     cur.execute(insert_script)
 
 def delete_db_element(nom):
@@ -50,7 +47,7 @@ def delete_db_element(nom):
 
 def admin_display():
     cur.execute('SELECT * FROM utilisateur')
-    conn.commit()
+    connection.commit()
        
 def user_display():
     cur.execute('SELECT')
