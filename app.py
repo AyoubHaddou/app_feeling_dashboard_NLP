@@ -13,11 +13,12 @@ cur = conn.cursor()
 
 # Create table statement
 
-sqlCreateDatabase = "create database coachDB;"
+sqlCreateDatabase = "create database coach_db;"
 # Create a table in PostgreSQL database
 
 cur.execute(sqlCreateDatabase)
-
+cur.commit()
+cur.close()
 
 def create_db():
     create_script = """ CREATE TABLE utilisateur IF NOT EXIST ( 
