@@ -13,9 +13,8 @@ cur = conn.cursor()
 
 # Create table statement
 
-sqlCreateDatabase = "create database coach_db;"
+sqlCreateDatabase = "CREATE DATABASE coach_db;"
 # Create a table in PostgreSQL database
-
 cur.execute(sqlCreateDatabase)
 cur.commit()
 cur.close()
