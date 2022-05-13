@@ -19,7 +19,7 @@ def login_db():
 def create_table():
     db, cur = login_db()
     create_script = """CREATE TABLE IF NOT EXISTS utilisateur ( 
-                    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,  
+                    id INT PRIMARY KEY AUTO_INCREMENT,  
                     nom VARCHAR(100), 
                     prenom VARCHAR(100), 
                     email VARCHAR(255), 
