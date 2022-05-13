@@ -44,10 +44,11 @@ def insert_user(nom,prenom,record,email,data_naissance,ville,code_postal,date_du
 def delete_db_element(nom):
     delete_script = f'DELETE FROM utilisateurs WHERE name = {nom}'
     cur.execute(delete_script)
+    db.commit()
     db.close()
 
 def admin_display():
-    cur.execute('SELECT * FROM utilisateur')
+    cur.execute('SELECT * FROM utilisateur;')
     db.commit()
     db.close()
        
@@ -59,6 +60,7 @@ def user_display():
 def update_user(Texte_du_jour):
     update_script = f'UPDATE utilisateur SET Texte_du_jour = {Texte_du_jour} WHERE Texte_du_jour = {Texte_du_jour}'
     cur.execute(update_script)
+    db.commit()
     db.close()
 
 def day_text(Texte_du_jour):
