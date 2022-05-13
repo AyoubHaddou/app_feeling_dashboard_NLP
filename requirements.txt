@@ -6,3 +6,4 @@ psycopg2
 requests
 numpy
 readline
+psycopg2-binary
