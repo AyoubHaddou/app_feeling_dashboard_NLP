@@ -71,9 +71,9 @@ def update_user(Texte_du_jour):
     db.commit()
     db.close()
 
-def day_text(Texte_du_jourr):
+def day_text(Texte_du_jour):
     db, cur = login_db()
-    insert_texte = f'INSERT INTO utilisateur (Texte_du_jour) VALUES ({Texte_du_jourr});'
+    insert_texte = f"INSERT INTO table utilisateur (Texte_du_jour) VALUES ('{Texte_du_jour}');"
     cur.execute(insert_texte)
     db.commit()
     db.close()
