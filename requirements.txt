@@ -2,7 +2,7 @@ dataclasses
 streamlit 
 streamlit_authenticator
 pandas
-sqlite3
+sqlite
 requests
 numpy
 readline
