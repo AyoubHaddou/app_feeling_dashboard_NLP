@@ -14,7 +14,7 @@ cur = db.cursor()
 # Create table statement
 
 def create_db():
-    create_script = """CREATE DATABASES if not exists coach_db;
+    create_script = """CREATE database coach_db;
                     CREATE TABLE IF NOT EXISTS utilisateur ( 
                     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,  
                     nom VARCHAR(100), 
