@@ -1,0 +1,4 @@
+dataclasses
+streamlit 
+streamlit_authenticator
+pandas
