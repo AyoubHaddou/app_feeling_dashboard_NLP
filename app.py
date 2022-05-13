@@ -2,6 +2,7 @@ from matplotlib import image
 from pandas import DataFrame
 import streamlit as st
 import streamlit_authenticator as stauth 
+from .database import day_text
 
 
 ## Home 
@@ -54,8 +55,9 @@ selection = st.sidebar.selectbox('Que souhaitez vous faire ?', ['Rédiger votre 
 
 if selection == 'Rédiger votre texte du jour':
     WordOfDay = st.text_area('Ecrivez votre texte du jour :')
-    st.button('Publier')
-
+    button = st.button('Publier')
+    if button :
+        day_text(WordOfDay)
 if selection == 'Modifier votre texte du jour':
     WordOfDay = st.text_area('Ecrivez votre texte du jour :')
     st.button('Publier')
