@@ -13,10 +13,9 @@ cur = db.cursor()
 
 # Create table statement
 
-def create_db():
-    create_script = """CREATE database coach_db;
-                    CREATE TABLE IF NOT EXISTS utilisateur ( 
-                    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,  
+def create_table():
+    create_script = """CREATE TABLE IF NOT EXISTS utilisateur ( 
+                    id INT PRIMARY KEY NOT NULL,  
                     nom VARCHAR(100), 
                     prenom VARCHAR(100), 
                     email VARCHAR(255), 
@@ -27,13 +26,13 @@ def create_db():
                     Texte_du_jour VARCHAR(500), 
                     Emotion_majoritaire VARCHAR(20), 
                     Statut VARCHAR(10)
-                    ) """
+                    ) ; """
     cur.execute(create_script)
     db.commit()
     db.close()
 
 
-create_db()
+create_table()
 
 
 def insert_user(nom,prenom,record,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut):
