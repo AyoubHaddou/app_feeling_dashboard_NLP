@@ -1,7 +1,7 @@
 from pandas import DataFrame
 import streamlit as st
 import streamlit_authenticator as stauth 
-from database import day_text
+from models.database import day_text
 
 
 ## Home 
