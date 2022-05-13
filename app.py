@@ -39,27 +39,35 @@ def create_db():
 
 def insert_user(nom,prenom,record,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut):
     insert_script = f'INSERT INTO utilisateur VALUES {nom,prenom,record,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut}'
-    conn.commit()
     cur.execute(insert_script)
+    conn.commit()
+    conn.close()
 
 def delete_db_element(nom):
     delete_script = f'DELETE FROM utilisateurs WHERE name = {nom}'
     cur.execute(delete_script)
+    conn.close()
 
 def admin_display():
     cur.execute('SELECT * FROM utilisateur')
     conn.commit()
+    conn.close()
        
 def user_display():
     cur.execute('SELECT')
+    conn.commit()
+    conn.close()
 
 def update_user(Texte_du_jour):
     update_script = f'UPDATE utilisateur SET Texte_du_jour = {Texte_du_jour} WHERE Texte_du_jour = {Texte_du_jour}'
     cur.execute(update_script)
+    conn.close()
 
 def day_text(Texte_du_jour):
     insert_texte = f'INSERT INTO utilisateur (Texte_du_jour) VALUES {Texte_du_jour}'
     cur.execute(insert_texte)
+    conn.commit()
+    conn.close()
 
 ## Home 
 
