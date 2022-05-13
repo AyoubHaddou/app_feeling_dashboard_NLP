@@ -42,7 +42,7 @@ def insert_user(nom,prenom,record,email,data_naissance,ville,code_postal,date_du
     db.close()
 
 def delete_db_element(nom):
-    delete_script = f'DELETE FROM utilisateurs WHERE name = {nom}'
+    delete_script = f'DELETE FROM utilisateur WHERE name = {nom};'
     cur.execute(delete_script)
     db.commit()
     db.close()
