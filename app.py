@@ -2,7 +2,7 @@ from matplotlib import image
 from pandas import DataFrame
 import streamlit as st
 import streamlit_authenticator as stauth 
-from .database import day_text
+from database import day_text
 
 
 ## Home 
