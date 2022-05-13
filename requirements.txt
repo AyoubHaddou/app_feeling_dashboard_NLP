@@ -6,4 +6,3 @@ pysqlite3
 requests
 numpy
 readline
-psycopg2-binary
