@@ -1,8 +1,6 @@
 from readline import insert_text
 import sqlite3
 from numpy import insert, reciprocal
-import sqlite3
-from psycopg2 import connection
 from requests import delete
 
 

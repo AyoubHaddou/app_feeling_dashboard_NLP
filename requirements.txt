@@ -7,3 +7,4 @@ requests
 numpy
 readline
 libpq-dev
+psycopg2-binary
