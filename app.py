@@ -6,8 +6,10 @@ import streamlit_authenticator as stauth
 
 ## Home 
 
-st.header("Mr zen coaching")
-st.image ('coach.gif')
+col1, col2, col3 = st.columns(3)
+
+with col2:
+    st.image('coach.gif')
 
 names = ['John Smith','Rebecca Briggs']
 usernames = ['jsmith','rbriggs']
@@ -20,6 +22,8 @@ authenticator = stauth.Authenticate(names,usernames,hashed_passwords,
 
 name, authentication_status, username = authenticator.login('Login','main')
 
+st.markdown('by M.Zen coaching ')
+
 ## https://towardsdatascience.com/how-to-add-a-user-authentication-service-in-streamlit-a8b93bf02031 : authentification 
 
 
@@ -29,7 +33,7 @@ name, authentication_status, username = authenticator.login('Login','main')
 #st.sidebar.text('Prénom : Rocky')
 #st.sidebar.selectbox('Que souhaitez vous faire ?', ['Suivis patient', 'Gestion clientèle', 'Statistique générale'])
 
-#st.header('BALBOA COACHING')
+#st.header('Mr zen COACHING')
 #st.image ('motivation.jpeg')
 
 
