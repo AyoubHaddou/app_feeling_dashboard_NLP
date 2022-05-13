@@ -7,7 +7,7 @@ from numpy import insert, reciprocal
 from requests import delete
 
 
-conn = sqlite3.connect('coach_db')
+conn = sqlite3.connect('coach_db.db')
 cur = conn.cursor()
 
 
@@ -125,7 +125,7 @@ if selection == 'Modifier votre texte du jour':
     st.button('Publier')
 
 if selection == 'Consulter vos texte':
-    st.text('hxa')
+    st.write(admin_display())
 
 if selection == 'Consulter vos progressions':
     st.text('zfoczd')
