@@ -5,7 +5,7 @@ from requests import delete
 
 
 conn = sqlite3.connect('coach_db')
-cur = connection.cursor()
+cur = conn.cursor()
 
 
 # Create table statement
@@ -36,7 +36,7 @@ def create_db():
 
 def insert_user(nom,prenom,record,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut):
     insert_script = f'INSERT INTO utilisateur VALUES {nom,prenom,record,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut}'
-    connection.commit()
+    conn.commit()
     cur.execute(insert_script)
 
 def delete_db_element(nom):
@@ -45,7 +45,7 @@ def delete_db_element(nom):
 
 def admin_display():
     cur.execute('SELECT * FROM utilisateur')
-    connection.commit()
+    conn.commit()
        
 def user_display():
     cur.execute('SELECT')
