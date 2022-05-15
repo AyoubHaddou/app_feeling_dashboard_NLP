@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
+from sqlalchemy.orm import sessionmaker 
 
 
 Base = declarative_base()
@@ -33,6 +34,23 @@ class Text(Base):
     time_updated = Column(DateTime(timezone=True), onupdate=func.now())
 
 
+def conn():
+        
+    engine = create_engine('sqlite:///feeling_db.sqlite3')
+    Session = sessionmaker(bind=engine)
+    sess = Session()
+    return sess 
+
+def init_db():
+    sess = conn()
+    coach = Coach(name='Rocky', password="1234", patient_id=1)
+    patient = Patient(name='Junior', password='1234', coach_id=1)
+    sess.add_all([coach, patient])
+    sess.commit()
+
+
+
 if __name__ == '__main__':
     engine = create_engine('sqlite:///feeling_db.sqlite3')
     Base.metadata.create_all(engine)
+    init_db()

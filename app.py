@@ -43,24 +43,12 @@ with col2:
 
 st.sidebar.text('Nom : Balboa')
 st.sidebar.text('Prénom : Rocky')
-st.sidebar.selectbox('Que souhaitez vous faire ?', ['Suivis patient', 'Gestion clientèle', 'Statistique générale'])
 
 col1, col2, col3 = st.columns(3)
 
 with col2:
    st.image ('motivation.jpeg')
 
-
-
-#### Client 
-
-col1, col2, col3 = st.columns(3)
-
-with col2:
-    st.image ('motivation.jpeg')
-
-st.sidebar.text('Nom : Creed')
-st.sidebar.text('Prénom : Apollo')
 selection = st.sidebar.selectbox('Que souhaitez vous faire ?', ['Rédiger votre texte du jour', 'Modifier votre texte du jour', 'Consulter vos texte', 'Consulter vos progressions'])
 
 
@@ -88,7 +76,7 @@ if selection == 'Modifier votre texte du jour':
     st.write('--------------------------------')
     obj = sess.query(Text).filter_by(user_id = 1).filter(Text.id == sess.query(func.max(Text.id))).first()
     if obj :
-        st.write('Le message du jour encore modifiable est le suivant :')
+        st.write('Le message du jour modifiable est le suivant :')
         st.warning(obj.content)
     else:
         st.write('Aucun texte enregistré pour le moment.')
@@ -106,4 +94,14 @@ if selection == 'Consulter vos texte':
         st.write('Aucun texte enregistré pour le moment.')
 
 if selection == 'Consulter vos progressions':
-    st.text('zfoczd')
+    liste = []
+    result = sess.query(Text).all()
+    if result :
+        for text in result:
+            liste.append({'emotion_predicted' : text.emotion_predicted, 'texte' : text.content, 'time' : text.time_created, 'modif': text.time_updated})
+        # st.dataframe(liste_content, liste_emotion)
+        
+        st.dataframe(liste)
+        st.write('Graph are in coming. ')
+    else:
+        st.write('Aucun texte enregistré pour le moment.')
