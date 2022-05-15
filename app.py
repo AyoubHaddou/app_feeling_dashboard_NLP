@@ -96,8 +96,6 @@ if selection == 'Modifier votre texte du jour':
 if selection == 'Consulter vos texte':
     liste = []
     result = sess.query(Text).all()
-    print('MON PRINT !!!!!!!!!!!! TYPE => ', type(result))
-    print('MON PRINT !!!!!!!!!!!! LEN => ', len(result))
     if result :
         for text in result:
             liste.append({'emotion_predicted' : text.emotion_predicted, 'texte' : text.content, 'time' : text.time_created, 'modif': text.time_updated})
