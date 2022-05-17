@@ -1,142 +1,141 @@
-from pandas import DataFrame
+from dataclasses import dataclass, field
 import streamlit as st
 import streamlit_authenticator as stauth 
-
-import sqlite3
-from numpy import insert, reciprocal
-from requests import delete
-
-
-
+import pandas 
+from sqlalchemy.orm import sessionmaker 
+from sqlalchemy import create_engine , update 
+from models import Coach, Patient, Text 
+import datetime 
 
 
-def login_db():
-    db = sqlite3.connect('coach_db.db')
-    cur = db.cursor()
-    return(db, cur)
-# Create table statement
-
-def create_table():
-    db, cur = login_db()
-    create_script = """CREATE TABLE IF NOT EXISTS utilisateur ( 
-                    id INT PRIMARY KEY,  
-                    nom VARCHAR(100), 
-                    prenom VARCHAR(100), 
-                    email VARCHAR(255), 
-                    date_naissance DATE, 
-                    ville VARCHAR(255), 
-                    code_postal VARCHAR(5), 
-                    date_du_texte DATE, 
-                    Texte_du_jour VARCHAR(500), 
-                    Emotion_majoritaire VARCHAR(20), 
-                    Statut VARCHAR(10)
-                    ) ; """
-    cur.execute(create_script)
-    db.commit()
-    db.close()
+@dataclass 
+class Page:
+    selection = ""
+    info_dashboard = ""
+    sess = ""
+    col1, col2, col3 = st.columns(3)
+    title = ""
+    image_page = ""
+    WordOfDay = ""
+    actual_username = ""
+    current_user = ""
+    user_text = ""
 
 
-create_table()
+    def init_session(self):
 
+        engine = create_engine('sqlite:///feeling_db.sqlite3?check_same_thread=False')
+        Session = sessionmaker(bind=engine)
+        self.sess = Session()
+        coach_all = self.sess.query(Coach).all()
+        patient_all = self.sess.query(Patient).all()
+        password_all = []
+        usernames_all = []
+        names_all = []
 
-def insert_user(nom,prenom,record,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut):
-    db, cur = login_db()
-    insert_script = f'INSERT INTO utilisateur VALUES {nom,prenom,record,email,data_naissance,ville,code_postal,date_du_texte,Texte_du_jour,Emotion_majoritaire,Statut}'
-    cur.execute(insert_script)
-    db.commit()
-    db.close()
+        for coach, patient in zip(coach_all, patient_all):
+            coach_name = coach.name
+            patient_name = patient.name
+            names_all.append(coach_name)
+            names_all.append(patient_name)
+            usernames_all.append(coach.username)
+            usernames_all.append(patient.username)
+            password_all.append(coach.password)
+            password_all.append(patient.password)
+     
 
-def delete_db_element(nom):
-    db, cur = login_db()
-    delete_script = f'DELETE FROM utilisateur WHERE name = {nom};'
-    cur.execute(delete_script)
-    db.commit()
-    db.close()
-
-def admin_display():
-    db, cur = login_db()
-    action = cur.execute('SELECT * FROM utilisateur;')
-    db.close()
-    return action 
-       
-def user_display():
-    db, cur = login_db()
-    cur.execute('SELECT')
-    db.close()
-
-def update_user(Texte_du_jour):
-    db, cur = login_db()
-    update_script = f'UPDATE utilisateur SET Texte_du_jour = {Texte_du_jour} WHERE Texte_du_jour = {Texte_du_jour}'
-    cur.execute(update_script)
-    db.commit()
-    db.close()
-
-def day_text(Texte_du_jour):
-    db, cur = login_db()
-    insert_texte = f"INSERT INTO utilisateur (id, Texte_du_jour) VALUES ('0', '{Texte_du_jour}');"
-    cur.execute(insert_texte)
-    db.commit()
-    db.close()
-
-## Home 
-
-#col1, col2, col3 = st.columns(3)
-
-#with col2:
-#    st.image('coach.gif')
-
-#names = ['John Smith','Rebecca Briggs']
-#usernames = ['jsmith','rbriggs']
-#passwords = ['123','456']
-
-#hashed_passwords = stauth.Hasher(passwords).generate()
-
-#authenticator = stauth.Authenticate(names,usernames,hashed_passwords,
-#    'some_cookie_name','some_signature_key',cookie_expiry_days=30)
-
-#name, authentication_status, username = authenticator.login('Login','main')
-
-#st.markdown('by M.Zen coaching ')
+        # Authentification     
+        hash_password_all = stauth.Hasher(password_all).generate()
+        authenticator = stauth.Authenticate(names_all, usernames_all,hash_password_all,
+                                            'some_cookie_name','some_signature_key',cookie_expiry_days=0)
+        authenticator.login('Login','main')
 
 
 
-### Admin 
+    def session(self):
 
-#st.sidebar.text('Nom : Balboa')
-#st.sidebar.text('Prénom : Rocky')
-#st.sidebar.selectbox('Que souhaitez vous faire ?', ['Suivis patient', 'Gestion clientèle', 'Statistique générale'])
+        if (st.session_state['authentication_status'] == False) or (st.session_state['authentication_status'] == None) :
+            self.selection = st.sidebar.text('Please login')
+            self.info_dashboard = st.sidebar.text('Free demo account : \nUsername : jsmith \nPassword : 123')
+            with self.col2:
+                self.image_page = st.image('coach.gif')
 
-#col1, col2, col3 = st.columns(3)
-
-#with col2:
-#    st.image ('motivation.jpeg')
-
-
-
-#### Client 
-
-col1, col2, col3 = st.columns(3)
-
-with col2:
-    st.image ('motivation.jpeg')
-
-st.sidebar.text('Nom : Creed')
-st.sidebar.text('Prénom : Apollo')
-selection = st.sidebar.selectbox('Que souhaitez vous faire ?', ['Rédiger votre texte du jour', 'Modifier votre texte du jour', 'Consulter vos texte', 'Consulter vos progressions'])
+            if st.session_state['authentication_status'] == False :
+                st.error('Please enter correct username and password')
 
 
+        elif st.session_state['authentication_status']:
+            self.info_dashboard = st.sidebar.text('Welcome *%s*' % (st.session_state['name']))
+            self.selection = st.sidebar.selectbox('Que souhaitez vous faire ?', ['Rédiger votre texte du jour', 'Modifier votre texte du jour', 'Consulter vos texte', 'Consulter vos progressions'])
+            self.actual_username = st.session_state['username']
+            self.current_user = self.sess.query(Coach).filter_by( username = self.actual_username).first()
+            self.user_text = self.sess.query(Text).filter_by( user_id = self.current_user.id).all()
+            with self.col2:
+                self.image_page = st.image('motivation.jpeg')
+            self.display_content()
 
-if selection == 'Rédiger votre texte du jour':
-    WordOfDay = st.text_area('Ecrivez votre texte du jour :')
-    button = st.button('Publier')
-    if button :
-        day_text(WordOfDay)
-if selection == 'Modifier votre texte du jour':
-    WordOfDay = st.text_area('Ecrivez votre texte du jour :')
-    st.button('Publier')
 
-if selection == 'Consulter vos texte':
-    st.write(admin_display())
+    def display_content(self):
 
-if selection == 'Consulter vos progressions':
-    st.text('zfoczd')
+        if self.selection == 'Rédiger votre texte du jour':
+            self.title = st.title('Your day text')
+            self.WordOfDay = st.text_area('Rédiger votre texte du jour')
+            button = st.button('Publier')
+            if button and self.WordOfDay:
+                last_date = [0]
+                for text in self.user_text :
+                    last_date.append(text.time_created.day)
+                date = datetime.datetime.now().day
+                if last_date[-1] != date:
+                    text = Text(content=self.WordOfDay, emotion_predicted="in coming", user_id=self.current_user.id)
+                    self.sess.add(text)
+                    self.sess.commit()
+                    st.balloons()
+                    st.success('Message du jour envoyé!')
+                else:
+                    st.error('Text already send today. Go to modification space if you need it.')
+
+        elif self.selection == 'Modifier votre texte du jour':
+            self.title = st.title('Day text modification')
+            self.WordOfDay = st.text_area('Modifier votre texte du jour :')
+            button = st.button('Publier')
+            if button and self.WordOfDay :
+                self.sess.query(Text).filter_by(user_id = 1).update({"content" : self.WordOfDay}, synchronize_session="fetch")
+                self.sess.commit()
+                st.success("texte updated with success")
+            st.write('--------------------------------')
+            if self.user_text[-1] :
+                st.write('Le message du jour modifiable est le suivant :')
+                st.warning(self.user_text[-1].content)
+            else:
+                st.write('Aucun texte enregistré pour le moment.')
+
+        elif self.selection == 'Consulter vos texte':
+            liste = []
+            result = self.sess.query(Text).all()
+            if result :
+                for text in result:
+                    liste.append({'emotion_predicted' : text.emotion_predicted, 'texte' : text.content, 'time' : text.time_created, 'modif': text.time_updated})
+                # st.dataframe(liste_content, liste_emotion)
+                st.dataframe(liste)
+            else:
+                st.write('Aucun texte enregistré pour le moment.')
+
+        elif self.selection == 'Consulter vos progressions':
+            liste = []
+            result = self.sess.query(Text).all()
+            if result :
+                for text in result:
+                    liste.append({'emotion_predicted' : text.emotion_predicted, 'texte' : text.content, 'time' : text.time_created, 'modif': text.time_updated})
+                st.dataframe(liste)
+                st.write('Graph are in coming. ')
+            else:
+                st.write('Aucun texte enregistré pour le moment.')
+                
+
+        st.markdown('by M.Zen coaching ')
+
+
+page = Page()
+page.init_session()
+page.session()
