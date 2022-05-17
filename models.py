@@ -13,6 +13,7 @@ class Coach(Base):
     __tablename__ = 'Coach'
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
+    username = Column(String, nullable=False)
     password = Column(String, nullable=False)
     patient_id = Column(Integer, ForeignKey('Patient.id'))
 
@@ -21,6 +22,7 @@ class Patient(Base):
     __tablename__ = 'Patient'
     id = Column(Integer, primary_key = True)
     name = Column(String, nullable=False)
+    username = Column(String, nullable=False)
     password = Column(String, nullable=False)
     coach_id = Column(Integer, ForeignKey('Coach.id'))
 
@@ -43,8 +45,8 @@ def conn():
 
 def init_db():
     sess = conn()
-    coach = Coach(name='Rocky', password="1234", patient_id=1)
-    patient = Patient(name='Junior', password='1234', coach_id=1)
+    coach = Coach(name='John Smith', username="jsmith", password="123", patient_id=1)
+    patient = Patient(name='Rebecca Briggs', username='rbriggs', password='123', coach_id=1)
     sess.add_all([coach, patient])
     sess.commit()
 
