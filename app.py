@@ -6,7 +6,7 @@ from models import Coach, Patient, Text
 import numpy as np 
 import datetime 
 
-from sqlalchemy.orm import sessionmaker , column_property
+from sqlalchemy.orm import sessionmaker 
 from sqlalchemy import create_engine , update 
 
 from sqlalchemy.sql import select, func 
@@ -39,12 +39,16 @@ for coach, patient in zip(coach_all, patient_all):
     password_all.append(patient.password)
 
 
-hashed_passwords = stauth.Hasher(password_all).generate()
+def login_st(names_all, usernames_all, password_all):
 
-authenticator = stauth.Authenticate(names_all,usernames_all, hashed_passwords,
-   'some_cookie_name','some_signature_key',cookie_expiry_days=0)
+    hashed_passwords = stauth.Hasher(password_all).generate()
 
-name, authentication_status, username = authenticator.login('Login','main')
+    authenticator = stauth.Authenticate(names_all,usernames_all, hashed_passwords,
+    'some_cookie_name','some_signature_key',cookie_expiry_days=0)
+
+    return authenticator.login('Login','main')
+
+login_st(names_all, usernames_all, password_all)
 
 
 
@@ -96,7 +100,7 @@ if st.session_state['authentication_status']:
                 st.balloons()
                 st.success('Message du jour envoyé!')
             else:
-                st.warning('Text already send today. Go to modification space if you need it')
+                st.error('Text already send today. Go to modification space if you need it.')
             
 
     if selection == 'Modifier votre texte du jour':
