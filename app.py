@@ -111,23 +111,25 @@ class Page:
                 st.write('Aucun texte enregistré pour le moment.')
 
         elif self.selection == 'Consulter vos texte':
-            liste = []
+            self.title = st.title('Consult your text and emotions')
+            data = []
             result = self.sess.query(Text).all()
             if result :
                 for text in result:
-                    liste.append({'emotion_predicted' : text.emotion_predicted, 'texte' : text.content, 'time' : text.time_created, 'modif': text.time_updated})
-                # st.dataframe(liste_content, liste_emotion)
-                st.dataframe(liste)
+                    data.append({'emotion_predicted' : text.emotion_predicted, 'texte' : text.content, 'time' : text.time_created, 'modif': text.time_updated})
+                # st.dataframe(data_content, data_emotion)
+                st.dataframe(data)
             else:
                 st.write('Aucun texte enregistré pour le moment.')
 
         elif self.selection == 'Consulter vos progressions':
-            liste = []
+            self.title = st.title('Emotions tracker')
+            data = []
             result = self.sess.query(Text).all()
             if result :
                 for text in result:
-                    liste.append({'emotion_predicted' : text.emotion_predicted, 'texte' : text.content, 'time' : text.time_created, 'modif': text.time_updated})
-                st.dataframe(liste)
+                    data.append({'emotion_predicted' : text.emotion_predicted, 'texte' : text.content, 'time' : text.time_created, 'modif': text.time_updated})
+                st.dataframe(data)
                 st.write('Graph are in coming. ')
             else:
                 st.write('Aucun texte enregistré pour le moment.')
