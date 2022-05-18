@@ -5,3 +5,5 @@ pandas
 pysqlite3
 requests
 numpy
+sqlalchemy
+datetime
