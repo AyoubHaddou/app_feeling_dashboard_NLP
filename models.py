@@ -39,7 +39,8 @@ def init_db():
     sess = conn()
     coach = User(name='John Smith', username="jsmith", password="123", is_coach=True)
     patient = User(name='Rebecca Briggs', username='rbriggs', password='123', is_coach=False)
-    sess.add_all([coach, patient])
+    patient_2 = User(name='Rebecca Briggs2', username='rbriggs2', password='123', is_coach=False)
+    sess.add_all([coach, patient, patient_2])
     sess.commit()
 
 
