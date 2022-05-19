@@ -2,11 +2,13 @@ from dataclasses import dataclass, field
 import streamlit as st
 import streamlit_authenticator as stauth 
 import pandas 
+import json 
 from sqlalchemy.orm import sessionmaker 
-from sqlalchemy import create_engine , update 
+from sqlalchemy import create_engine , update , func 
 from models import Coach, Patient, Text 
+import requests
 import datetime 
-
+from function import predict_data
 
 @dataclass 
 class Page:
@@ -72,12 +74,14 @@ class Page:
             self.user_text = self.sess.query(Text).filter_by( user_id = self.current_user.id).all()
             with self.col2:
                 self.image_page = st.image('motivation.jpeg')
-            self.display_content()
 
 
     def display_content(self):
 
         if self.selection == 'Rédiger votre texte du jour':
+
+
+
             self.title = st.title('Your day text')
             self.WordOfDay = st.text_area('Rédiger votre texte du jour')
             button = st.button('Publier')
@@ -87,7 +91,7 @@ class Page:
                     last_date.append(text.time_created.day)
                 date = datetime.datetime.now().day
                 if last_date[-1] != date:
-                    text = Text(content=self.WordOfDay, emotion_predicted="in coming", user_id=self.current_user.id)
+                    text = Text(content=self.WordOfDay, emotion_predicted=predict_data(self.WordOfDay), user_id=self.current_user.id)
                     self.sess.add(text)
                     self.sess.commit()
                     st.balloons()
@@ -100,7 +104,7 @@ class Page:
             self.WordOfDay = st.text_area('Modifier votre texte du jour :')
             button = st.button('Publier')
             if button and self.WordOfDay :
-                self.sess.query(Text).filter_by(user_id = 1).update({"content" : self.WordOfDay}, synchronize_session="fetch")
+                self.sess.query(Text).filter(Text.user_id == 1, Text.id == self.sess.query(func.max(Text.id))).update({"content" : self.WordOfDay, "emotion_predicted" :predict_data(self.WordOfDay) }, synchronize_session="fetch")
                 self.sess.commit()
                 st.success("texte updated with success")
             st.write('--------------------------------')
@@ -141,3 +145,4 @@ class Page:
 page = Page()
 page.init_session()
 page.session()
+page.display_content()
