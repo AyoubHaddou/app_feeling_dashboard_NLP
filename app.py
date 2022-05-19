@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine , update , func 
 from models import Coach, Patient, Text 
 import datetime 
-from function import predict_data, plot_graph
+from function import predict_data
 import matplotlib.pyplot as plt
 
 @dataclass 
