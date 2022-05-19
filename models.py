@@ -1,6 +1,6 @@
 import sqlalchemy 
 from sqlalchemy import create_engine
-from sqlalchemy import Column, String, Integer, Float, ForeignKey, DateTime
+from sqlalchemy import Column, String, Integer, Float, ForeignKey, DateTime, Boolean 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 from sqlalchemy.orm import sessionmaker 
@@ -9,29 +9,21 @@ from sqlalchemy.orm import sessionmaker
 Base = declarative_base()
 
 
-class Coach(Base):
-    __tablename__ = 'Coach'
+class User(Base):
+    __tablename__ = 'User'
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     username = Column(String, nullable=False)
     password = Column(String, nullable=False)
-    patient_id = Column(Integer, ForeignKey('Patient.id'))
+    is_coach = Column(Boolean, default=False)
 
-
-class Patient(Base):
-    __tablename__ = 'Patient'
-    id = Column(Integer, primary_key = True)
-    name = Column(String, nullable=False)
-    username = Column(String, nullable=False)
-    password = Column(String, nullable=False)
-    coach_id = Column(Integer, ForeignKey('Coach.id'))
 
 class Text(Base):
     __tablename__ = 'Text'
     id = Column(Integer, primary_key = True)
     content = Column(String, nullable=False)
     emotion_predicted = Column(String)
-    user_id = Column(Integer, ForeignKey('Patient.id'), nullable=False)
+    user_id = Column(Integer, ForeignKey('User.id'), nullable=False)
     time_created = Column(DateTime(timezone=True), server_default=func.now())
     time_updated = Column(DateTime(timezone=True), onupdate=func.now())
 
@@ -45,8 +37,8 @@ def conn():
 
 def init_db():
     sess = conn()
-    coach = Coach(name='John Smith', username="jsmith", password="123", patient_id=1)
-    patient = Patient(name='Rebecca Briggs', username='rbriggs', password='123', coach_id=1)
+    coach = User(name='John Smith', username="jsmith", password="123", is_coach=True)
+    patient = User(name='Rebecca Briggs', username='rbriggs', password='123', is_coach=False)
     sess.add_all([coach, patient])
     sess.commit()
 

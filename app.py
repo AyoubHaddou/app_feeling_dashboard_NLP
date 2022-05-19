@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np 
 from sqlalchemy.orm import sessionmaker 
 from sqlalchemy import create_engine , update , func 
-from models import Coach, Patient, Text 
+from models import User, Text 
 import datetime 
 from function import predict_data
 import matplotlib.pyplot as plt
@@ -29,21 +29,16 @@ class Page:
         engine = create_engine('sqlite:///feeling_db.sqlite3?check_same_thread=False')
         Session = sessionmaker(bind=engine)
         self.sess = Session()
-        coach_all = self.sess.query(Coach).all()
-        patient_all = self.sess.query(Patient).all()
+        user_all = self.sess.query(User).all()
         password_all = []
         usernames_all = []
         names_all = []
 
-        for coach, patient in zip(coach_all, patient_all):
-            coach_name = coach.name
-            patient_name = patient.name
+        for user in user_all:
+            coach_name = user.name
             names_all.append(coach_name)
-            names_all.append(patient_name)
-            usernames_all.append(coach.username)
-            usernames_all.append(patient.username)
-            password_all.append(coach.password)
-            password_all.append(patient.password)
+            usernames_all.append(user.username)
+            password_all.append(user.password)
      
 
         # Authentification     
@@ -70,8 +65,8 @@ class Page:
             self.info_dashboard = st.sidebar.text('Welcome *%s*' % (st.session_state['name']))
             self.selection = st.sidebar.selectbox('Que souhaitez vous faire ?', ['Rédiger votre texte du jour', 'Modifier votre texte du jour', 'Consulter vos texte', 'Consulter vos progressions'])
             self.actual_username = st.session_state['username']
-            check_a = self.sess.query(Coach).filter_by( username = self.actual_username).first()
-            check_b = self.sess.query(Patient).filter_by( username = self.actual_username).first()
+            check_a = self.sess.query(User).filter_by( username = self.actual_username, is_coach=True).first()
+            check_b = self.sess.query(User).filter_by( username = self.actual_username, is_coach=False).first()
             if check_a :
                 self.user_text = self.sess.query(Text).all()
                 self.current_user = check_a
@@ -108,16 +103,16 @@ class Page:
             self.title = st.title('Day text modification')
             self.WordOfDay = st.text_area('Modifier votre texte du jour :')
             button = st.button('Publier')
-            if button and self.WordOfDay :
+            if self.user_text :
+                st.write('Le message du jour modifiable est le suivant :')
+                st.warning(self.user_text[-1].content)
+            elif button and self.WordOfDay :
                 self.sess.query(Text).filter(Text.user_id == 1, Text.id == self.sess.query(func.max(Text.id))).update({"content" : self.WordOfDay, "emotion_predicted" :predict_data(self.WordOfDay) }, synchronize_session="fetch")
                 self.sess.commit()
                 st.success("texte updated with success")
-            st.write('--------------------------------')
-            if self.user_text[-1] :
-                st.write('Le message du jour modifiable est le suivant :')
-                st.warning(self.user_text[-1].content)
             else:
                 st.write('Aucun texte enregistré pour le moment.')
+            st.write('--------------------------------')
 
         elif self.selection == 'Consulter vos texte':
             self.title = st.title('Consult your text and emotions')
@@ -141,6 +136,7 @@ class Page:
                 arr = df.emotion_predicted
                 fig, ax = plt.subplots()
                 ax.hist(arr, bins=20)
+                plt.title('Bar of happyness')
                 st.pyplot(fig)
             else:
                 st.write('Aucun texte enregistré pour le moment.')
