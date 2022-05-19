@@ -6,5 +6,6 @@ pysqlite3
 requests
 numpy
 matplotlib
+matplotlib.pyplot
 sqlalchemy
 datetime
