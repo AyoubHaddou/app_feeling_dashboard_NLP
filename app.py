@@ -6,6 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine , update 
 from models import Coach, Patient, Text 
 import datetime 
+import matplotlib.pyplot as plt
 
 
 @dataclass 
@@ -136,6 +137,14 @@ class Page:
                 
 
         st.markdown('by M.Zen coaching ')
+    
+    def graphique(self):
+       x = []
+       plt.plot(x)   
+       plt.title("Evolution du patient")
+       plt.axis('equal')
+       plt.show()
+       plt.close()
 
 
 page = Page()
