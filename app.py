@@ -2,11 +2,9 @@ from dataclasses import dataclass, field
 import streamlit as st
 import streamlit_authenticator as stauth 
 import pandas 
-import json 
 from sqlalchemy.orm import sessionmaker 
 from sqlalchemy import create_engine , update , func 
 from models import Coach, Patient, Text 
-import requests
 import datetime 
 from function import predict_data
 
