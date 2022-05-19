@@ -119,7 +119,7 @@ class Page:
                 for text in result:
                     data.append({'emotion_predicted' : text.emotion_predicted, 'texte' : text.content, 'time' : text.time_created, 'modif': text.time_updated})
                 # st.dataframe(data_content, data_emotion)
-                st.dataframe(data)
+    
             else:
                 st.write('Aucun texte enregistré pour le moment.')
 
@@ -131,20 +131,20 @@ class Page:
                 for text in result:
                     data.append({'emotion_predicted' : text.emotion_predicted, 'texte' : text.content, 'time' : text.time_created, 'modif': text.time_updated})
                 st.dataframe(data)
-                st.write('Graph are in coming. ')
+                  st.dataframe(data)
+                
+                x = [data.emotion_predicted]
+                plt.plot(x)   
+                plt.title("Evolution du patient")
+                plt.axis('equal')
+                plt.show()
+                plt.close()
             else:
                 st.write('Aucun texte enregistré pour le moment.')
                 
 
         st.markdown('by M.Zen coaching ')
     
-    def graphique(self):
-       x = []
-       plt.plot(x)   
-       plt.title("Evolution du patient")
-       plt.axis('equal')
-       plt.show()
-       plt.close()
 
 
 page = Page()
