@@ -70,8 +70,14 @@ class Page:
             self.info_dashboard = st.sidebar.text('Welcome *%s*' % (st.session_state['name']))
             self.selection = st.sidebar.selectbox('Que souhaitez vous faire ?', ['Rédiger votre texte du jour', 'Modifier votre texte du jour', 'Consulter vos texte', 'Consulter vos progressions'])
             self.actual_username = st.session_state['username']
-            self.current_user = self.sess.query(Coach).filter_by( username = self.actual_username).first()
-            self.user_text = self.sess.query(Text).filter_by( user_id = self.current_user.id).all()
+            check_a = self.sess.query(Coach).filter_by( username = self.actual_username).first()
+            check_b = self.sess.query(Patient).filter_by( username = self.actual_username).first()
+            if check_a :
+                self.user_text = self.sess.query(Text).all()
+                self.current_user = check_a
+            elif check_b :
+                self.user_text = self.sess.query(Text).filter_by( user_id = check_b.id).all()
+                self.current_user = check_b
             with self.col2:
                 self.image_page = st.image('motivation.jpeg')
 
@@ -79,16 +85,15 @@ class Page:
     def display_content(self):
 
         if self.selection == 'Rédiger votre texte du jour':
-
-
-
             self.title = st.title('Your day text')
             self.WordOfDay = st.text_area('Rédiger votre texte du jour')
             button = st.button('Publier')
             if button and self.WordOfDay:
                 last_date = [0]
-                for text in self.user_text :
-                    last_date.append(text.time_created.day)
+                if self.user_text:
+                    for text in self.user_text :
+                        last_date.append(text.time_created.day)
+
                 date = datetime.datetime.now().day
                 if last_date[-1] != date:
                     text = Text(content=self.WordOfDay, emotion_predicted=predict_data(self.WordOfDay), user_id=self.current_user.id)
@@ -117,7 +122,7 @@ class Page:
         elif self.selection == 'Consulter vos texte':
             self.title = st.title('Consult your text and emotions')
             data = []
-            result = self.sess.query(Text).all()
+            result = self.sess.query(Text).filter_by().all()
             if result :
                 for text in result:
                     data.append({'emotion_predicted' : text.emotion_predicted, 'texte' : text.content, 'time' : text.time_created, 'modif': text.time_updated})
@@ -129,19 +134,16 @@ class Page:
         elif self.selection == 'Consulter vos progressions':
             self.title = st.title('Emotions tracker')
             data = []
-            result = self.sess.query(Text).all()
-            if result :
-                for text in result:
+            if self.user_text :
+                for text in self.user_text:
                     data.append({'emotion_predicted' : text.emotion_predicted, 'texte' : text.content, 'time' : text.time_created, 'modif': text.time_updated})
                 df = pd.DataFrame(data)
                 arr = df.emotion_predicted
                 fig, ax = plt.subplots()
                 ax.hist(arr, bins=20)
-
                 st.pyplot(fig)
             else:
                 st.write('Aucun texte enregistré pour le moment.')
-                
 
         st.markdown('by M.Zen coaching ')
 
