@@ -19,4 +19,4 @@ II. Data sources :
 III. API et base de données : lien : 
 
 Un compte user 
-Une option is_coach est dans la bdd donnant acces aux coach aux visualisations des emotions de tout ses patients
+Un compte coach donnant acces aux visualisations des emotions de ses patients
