@@ -1,12 +1,14 @@
 from dataclasses import dataclass, field
 import streamlit as st
 import streamlit_authenticator as stauth 
-import pandas 
+import pandas as pd
+import numpy as np 
 from sqlalchemy.orm import sessionmaker 
 from sqlalchemy import create_engine , update , func 
 from models import Coach, Patient, Text 
 import datetime 
-from function import predict_data
+from function import predict_data, plot_graph
+import matplotlib.pyplot as plt
 
 @dataclass 
 class Page:
@@ -131,8 +133,12 @@ class Page:
             if result :
                 for text in result:
                     data.append({'emotion_predicted' : text.emotion_predicted, 'texte' : text.content, 'time' : text.time_created, 'modif': text.time_updated})
-                st.dataframe(data)
-                st.write('Graph are in coming. ')
+                df = pd.DataFrame(data)
+                arr = df.emotion_predicted
+                fig, ax = plt.subplots()
+                ax.hist(arr, bins=20)
+
+                st.pyplot(fig)
             else:
                 st.write('Aucun texte enregistré pour le moment.')
                 
