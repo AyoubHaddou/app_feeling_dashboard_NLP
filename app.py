@@ -139,8 +139,11 @@ class Page:
 
         st.markdown('by M.Zen coaching ')
 
+    def run_page(self):
+        self.init_session()
+        self.session()
+        self.display_content()
+
 
 page = Page()
-page.init_session()
-page.session()
-page.display_content()
+page.run_page()
