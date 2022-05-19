@@ -12,10 +12,11 @@ import matplotlib.pyplot as plt
 
 @dataclass 
 class Page:
+    config = st.set_page_config(layout="wide")
+    col1, col2, col3 = st.columns(3)
     selection = ""
     info_dashboard = ""
     sess = ""
-    col1, col2, col3 = st.columns(3)
     title = ""
     image_page = ""
     WordOfDay = ""
@@ -25,6 +26,8 @@ class Page:
 
 
     def init_session(self):
+
+        
 
         engine = create_engine('sqlite:///feeling_db.sqlite3?check_same_thread=False')
         Session = sessionmaker(bind=engine)
@@ -41,7 +44,8 @@ class Page:
             password_all.append(user.password)
      
 
-        # Authentification     
+        # Authentification    
+         
         hash_password_all = stauth.Hasher(password_all).generate()
         authenticator = stauth.Authenticate(names_all, usernames_all,hash_password_all,
                                             'some_cookie_name','some_signature_key',cookie_expiry_days=0)
@@ -52,8 +56,8 @@ class Page:
     def session(self):
 
         if (st.session_state['authentication_status'] == False) or (st.session_state['authentication_status'] == None) :
-            self.selection = st.sidebar.text('Please login')
             self.info_dashboard = st.sidebar.text('Free demo account : \nUsername : jsmith \nPassword : 123')
+            self.selection = st.sidebar.text('Please login')
             with self.col2:
                 self.image_page = st.image('coach.gif')
 
@@ -88,7 +92,6 @@ class Page:
                 if self.user_text:
                     for text in self.user_text :
                         last_date.append(text.time_created.day)
-
                 date = datetime.datetime.now().day
                 if last_date[-1] != date:
                     text = Text(content=self.WordOfDay, emotion_predicted=predict_data(self.WordOfDay), user_id=self.current_user.id)
@@ -106,12 +109,12 @@ class Page:
             if self.user_text :
                 st.write('Le message du jour modifiable est le suivant :')
                 st.warning(self.user_text[-1].content)
-            elif button and self.WordOfDay :
-                self.sess.query(Text).filter(Text.user_id == 1, Text.id == self.sess.query(func.max(Text.id))).update({"content" : self.WordOfDay, "emotion_predicted" :predict_data(self.WordOfDay) }, synchronize_session="fetch")
-                self.sess.commit()
-                st.success("texte updated with success")
             else:
                 st.write('Aucun texte enregistré pour le moment.')
+            if button and self.WordOfDay :
+                self.sess.query(Text).filter(Text.user_id == self.current_user.id, Text.id == self.sess.query(func.max(Text.id))).update({"content" : self.WordOfDay, "emotion_predicted" :predict_data(self.WordOfDay) }, synchronize_session="fetch")
+                self.sess.commit()
+                st.success("texte updated with success")
             st.write('--------------------------------')
 
         elif self.selection == 'Consulter vos texte':
@@ -119,7 +122,7 @@ class Page:
             data = []
             result = self.sess.query(Text).filter_by().all()
             if result :
-                for text in result:
+                for text in self.user_text:
                     data.append({'emotion_predicted' : text.emotion_predicted, 'texte' : text.content, 'time' : text.time_created, 'modif': text.time_updated})
                 # st.dataframe(data_content, data_emotion)
                 st.dataframe(data)
@@ -127,17 +130,25 @@ class Page:
                 st.write('Aucun texte enregistré pour le moment.')
 
         elif self.selection == 'Consulter vos progressions':
-            self.title = st.title('Emotions tracker')
+
             data = []
             if self.user_text :
                 for text in self.user_text:
                     data.append({'emotion_predicted' : text.emotion_predicted, 'texte' : text.content, 'time' : text.time_created, 'modif': text.time_updated})
                 df = pd.DataFrame(data)
+                self.title = st.title('Emotions tracker')
+                arr_2 = df[['emotion_predicted','texte']]
+                st.write(arr_2)
+                
                 arr = df.emotion_predicted
                 fig, ax = plt.subplots()
                 ax.hist(arr, bins=20)
                 plt.title('Bar of happyness')
                 st.pyplot(fig)
+
+
+
+
             else:
                 st.write('Aucun texte enregistré pour le moment.')
 
@@ -147,7 +158,6 @@ class Page:
         self.init_session()
         self.session()
         self.display_content()
-
 
 page = Page()
 page.run_page()
