@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np 
 from sqlalchemy.orm import sessionmaker 
 from sqlalchemy import create_engine , update , func 
-from models import User, Text 
+from .models import User, Text 
 import datetime 
 from function import predict_data, make_engine_session, emotion_int
 import matplotlib.pyplot as plt
@@ -106,7 +106,6 @@ class Page:
                 self.sess.query(Text).filter(Text.user_id == self.current_user.id, Text.id == self.sess.query(func.max(Text.id))).update({"content" : self.WordOfDay, "emotion_predicted" :predict_data(self.WordOfDay) }, synchronize_session="fetch")
                 self.sess.commit()
                 st.success("texte updated with success")
-            st.write('--------------------------------')
 
     def display_data(self):
 
