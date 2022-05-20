@@ -6,19 +6,14 @@ En local il sufffira ensuite d'executer la commande : streamlit run app.py
 
 I. Application dashboard pour coach des sentiments 
 
-    Pour le lien vers le site streamlit [clic ici](https://share.streamlit.io/ayoubhaddou/app_feeling_dashboard_nlp/main/app.py)
+- Voici le lien vers l'application streamlit : https://share.streamlit.io/ayoubhaddou/app_feeling_dashboard_nlp/main/app.py
 
-
-II. Data sources : 
-
-    Jeu de donnée Kaggle :  https://www.kaggle.com/datasets/ishantjuyal/emotions-in-text
-
-    Data augmentation : https://data.world/crowdflower/sentiment-analysis-in-text
-
-
-III. API et base de données : 
+II. API et base de données : 
     lien repo : https://github.com/AyoubHaddou/API_feeling_dashboard_NLP
-    lien api deployed for prediction : 
-
-Un compte user 
-Un compte coach donnant acces aux visualisations des emotions de ses patients
+    
+    lien de l'api deployé : 
+    
+    
+III. Data sources : 
+- Jeu de donnée Kaggle :  https://www.kaggle.com/datasets/ishantjuyal/emotions-in-text
+- Data augmentation : https://data.world/crowdflower/sentiment-analysis-in-text
