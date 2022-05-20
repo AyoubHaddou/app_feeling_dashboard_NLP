@@ -1,20 +1,31 @@
 # Classification des sentiments
 
-Intro. 
+II. Intro : 
 
-*Si necessaire après un git clone, la première étape consiste à creer la base de donénes en executant la commande : python models.py
-En local il sufffira ensuite d'executer la commande : streamlit run app.py*
+Ce travail a été réaliser dans le cadre d'un projet pour Simplon. 
+Je vous invite la lire la section exercice_info pour prendre connaissances des conditions d'éxercices. 
 
-I. Application dashboard pour coach des sentiments 
+I. Commande script. 
+
+*Si necessaire après un git clone :
+- la première étape consiste à lancer la commande : pip install -r requirements.txt. 
+- Si vous n'avez pas le fichier feeling_db.sqlite3 dans le sous répertoire db, il faudra executer la commande suivant à partir de la racine du repo : 
+pip install -r requirements.txt 
+- Enfin, en local il sufffira ensuite d'executer la commande : streamlit run app.py
+- Il faut s'assurer que l'api soit en route, sinon il faudra également run l'api en local pour profiter de toute les fonctionnalités du site.*
+
+II. Application dashboard pour coach des sentiments 
 
 - Voici le lien vers l'application streamlit : https://share.streamlit.io/ayoubhaddou/app_feeling_dashboard_nlp/main/app.py
 
-II. API et base de données : 
+III. API et base de données : 
     lien repo : https://github.com/AyoubHaddou/API_feeling_dashboard_NLP
-    
     lien de l'api deployé : 
+
+IV. Entrainement du modèle : 
+    Voir le colab notebook dans la section preprocessing_model, [clic ici](/preprocessing_model/preprocessing_models_NLP.ipynb)
     
     
-III. Data sources : 
+V. Data sources : 
 - Jeu de donnée Kaggle :  https://www.kaggle.com/datasets/ishantjuyal/emotions-in-text
 - Data augmentation : https://data.world/crowdflower/sentiment-analysis-in-text

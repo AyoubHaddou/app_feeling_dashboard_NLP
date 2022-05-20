@@ -1,10 +1,11 @@
+from email.policy import default
 import sqlalchemy 
 from sqlalchemy import create_engine
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, DateTime, Boolean 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 from sqlalchemy.orm import sessionmaker 
-from function import predict_data
+from db.function import predict_data
 import streamlit_authenticator as stauth 
 
 
@@ -32,7 +33,7 @@ class Text(Base):
 
 def conn():
         
-    engine = create_engine('sqlite:///feeling_db.sqlite3')
+    engine = create_engine('sqlite:///db/feeling_db.sqlite3')
     Session = sessionmaker(bind=engine)
     sess = Session()
     return sess 
@@ -41,7 +42,7 @@ def init_db():
     sess = conn()
     coach = User(name='John Smith', username="jsmith", password=stauth.Hasher(['123']).generate()[0], is_coach=True)
     patient = User(name='Rebecca Briggs', username='rbriggs', password=stauth.Hasher(['123']).generate()[0], is_coach=False)
-    patient_2 = User(name='Rebecca Briggs2', username='rbriggs2', password=stauth.Hasher(['123']).generate()[0], is_coach=False)
+    patient_2 = User(name='Henri Stylos', username='henri', password=stauth.Hasher(['123']).generate()[0], is_coach=False)
     sess.add_all([coach, patient, patient_2])
     sess.commit()
 
@@ -69,8 +70,7 @@ def init_db():
         sess.add(text)
         sess.commit()
 
-
 if __name__ == '__main__':
-    engine = create_engine('sqlite:///feeling_db.sqlite3')
+    engine = create_engine('sqlite:///db/feeling_db.sqlite3')
     Base.metadata.create_all(engine)
     init_db()

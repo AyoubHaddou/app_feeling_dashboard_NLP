@@ -5,9 +5,9 @@ import pandas as pd
 import numpy as np 
 from sqlalchemy.orm import sessionmaker 
 from sqlalchemy import create_engine , update , func 
-from models import User, Text 
+from db.models import User, Text 
 import datetime 
-from function import predict_data, make_engine_session, emotion_int, df_all
+from db.function import predict_data, make_engine_session, emotion_int, df_all
 import matplotlib.pyplot as plt
 
 @dataclass 
@@ -27,7 +27,7 @@ class Page:
     side_logout = ""
 
     def login_streamlit(self):
-
+        
         user_all = self.sess.query(User).all()
         names_all = []
         usernames_all = []
@@ -73,8 +73,6 @@ class Page:
             if self.side_logout :
                 st.session_state.authentication_status = None
                 st.experimental_rerun()
-        
-
 
 
     def add_content(self):
@@ -113,29 +111,27 @@ class Page:
                 self.sess.commit()
                 st.success("texte updated with success")
 
-    def display_df_text(self):
+    def display_df_main(self):
 
         if self.side_selection == 'Suivit des emotions':
             self.title = st.title('Consult texts and emotions passed')
             if self.user_text :
                 col_graph1, col_graph2 = st.columns(2)
+                with col_graph1:
+                    choice_date_1 = st.date_input('A partir de :', value=datetime.datetime.strptime('2022-05-01', "%Y-%m-%d").date() )
+                with col_graph2:
+                    choice_date_2 = st.date_input("Jusqu'à :" )
                 if self.current_user.is_coach :
-                    with col_graph1:
-                        choice_date_1 = st.date_input('A partir de :' )
                     choice = st.selectbox('Choose your patient by id' , np.append("All", self.df_all.name.unique()))
-                    with col_graph2:
-                        choice_date_2 = st.date_input("Jusqu'à :" )
-                        button = st.button('Validate date')
-                    if button :
-                        self.df_all = self.df_all[(self.df_all.time >= str(choice_date_1)) & (self.df_all.time <= str(choice_date_2))]
                     if choice != "All":
-                        self.df_all = self.df_all[self.df_all.name == choice]
+                        self.df_all = self.df_all[(self.df_all.time >= str(choice_date_1)) & (self.df_all.time <= str(choice_date_2)) & (self.df_all.name == choice)]
                         st.write(self.df_all.drop('user_id', axis=1))
                     else:
+                        self.df_all = self.df_all[(self.df_all.time >= str(choice_date_1)) & (self.df_all.time <= str(choice_date_2))]
                         st.write(self.df_all.drop('user_id', axis=1))
                 else:
-                    self.df_all = self.df_all.drop('user_id', axis=1)[self.df_all.name == self.current_user.name]
-                    st.write(self.df_all)
+                    self.df_all = self.df_all[(self.df_all.time >= str(choice_date_1)) & (self.df_all.time <= str(choice_date_2)) & (self.df_all.name == self.current_user.name)]
+                    st.write(self.df_all.drop('user_id', axis=1))
             else:
                 st.write('Aucun texte enregistré pour le moment.')
 
@@ -172,16 +168,6 @@ class Page:
     def add_user(self):
         if self.side_selection == 'Ajouter un patient':
             col_graph1, col_graph2 = st.columns(2)
-
-            with col_graph2:
-                    
-                st.subheader('Liste des patients')
-                users = self.sess.query(User).filter_by(is_coach=False).all()
-                if users :
-                    st.write(self.df_all.groupby('name').count().reset_index()[['name','id']].rename(columns={'id':'text counts'}))
-                else:
-                    st.write('Aucun User enregistré pour le moment.')
-
             with col_graph1:
                 st.subheader('Ajouter un patient')
                 with st.form("my_form"):
@@ -196,10 +182,18 @@ class Page:
                         patient = User(name=name, username=username, password=stauth.Hasher([password]).generate()[0], is_coach=checkbox_val)
                         self.sess.add(patient)
                         self.sess.commit()
-                        st.success('Nouveau patient ajouté envoyé!')
+                        st.success('Nouveau patient ajouté!')
+            with col_graph2:
+                st.subheader('Liste des patients')
+                self.df_all = df_all(Text, User)
+                users = self.sess.query(User).filter_by(is_coach=False).all()
+                if users :
+                    df_petient = self.df_all.groupby('name').count().reset_index()[['name','emotion_predicted']].rename(columns={'emotion_predicted':'text_counts'})
+                    st.write(df_petient)
+                else:
+                    st.write('Aucun User enregistré pour le moment.')
 
     def test_pred(self):
-
         if self.side_selection == 'Tester votre IA':
             self.title = st.title('Prediction manuel')
             self.WordOfDay = st.text_area('Entrer un paragraphe à prédir')
@@ -207,13 +201,12 @@ class Page:
             if button :
                 st.success(f"Sentiment prédit par l'IA : {predict_data(self.WordOfDay)}")
             
-
     def run_page(self):
         self.login_streamlit()
         self.instance_session()
         self.add_content()
         self.update_content()
-        self.display_df_text()
+        self.display_df_main()
         self.display_pie_hist()
         self.add_user()
         self.test_pred()
