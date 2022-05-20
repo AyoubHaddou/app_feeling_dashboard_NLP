@@ -39,9 +39,9 @@ def conn():
 
 def init_db():
     sess = conn()
-    coach = User(name='John Smith', username="jsmith", password=str(stauth.Hasher(['123']).generate()), is_coach=True)
-    patient = User(name='Rebecca Briggs', username='rbriggs', password=str(stauth.Hasher(['123']).generate()), is_coach=False)
-    patient_2 = User(name='Rebecca Briggs2', username='rbriggs2', password=str(stauth.Hasher(['123']).generate()), is_coach=False)
+    coach = User(name='John Smith', username="jsmith", password=stauth.Hasher(['123']).generate()[0], is_coach=True)
+    patient = User(name='Rebecca Briggs', username='rbriggs', password=stauth.Hasher(['123']).generate()[0], is_coach=False)
+    patient_2 = User(name='Rebecca Briggs2', username='rbriggs2', password=stauth.Hasher(['123']).generate()[0], is_coach=False)
     sess.add_all([coach, patient, patient_2])
     sess.commit()
 

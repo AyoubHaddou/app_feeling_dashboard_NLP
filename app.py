@@ -15,7 +15,7 @@ class Page:
     config = st.set_page_config(layout="wide")
     col1, col2, col3 = st.columns(3)
     sess = make_engine_session()
-    info_dashboard = ""
+    side_info_dashboard = ""
     side_selection = ""
     current_user = ""
     user_text = ""
@@ -28,12 +28,11 @@ class Page:
     def login_streamlit(self):
 
         user_all = self.sess.query(User).all()
-        hash_password_all = []
-        usernames_all = []
         names_all = []
+        usernames_all = []
+        hash_password_all = []
         for user in user_all:
-            coach_name = user.name
-            names_all.append(coach_name)
+            names_all.append(user.name)
             usernames_all.append(user.username)
             hash_password_all.append(user.password)
 
@@ -47,7 +46,7 @@ class Page:
         if (st.session_state['authentication_status'] == False) or (st.session_state['authentication_status'] == None) :
             with self.col2:
                 self.image_page = st.image('coach.gif')
-            self.info_dashboard = st.sidebar.text('Free demo account : \nUsername : jsmith \nPassword : 123')
+            self.side_info_dashboard = st.sidebar.text('Free demo account : \nUsername : jsmith \nPassword : 123')
             self.side_selection = st.sidebar.text('Please login')
             if st.session_state['authentication_status'] == False :
                 st.error('Please enter correct username and password')
@@ -55,7 +54,7 @@ class Page:
         elif st.session_state['authentication_status']:
             with self.col2:
                 self.image_page = st.image('motivation.jpeg')
-            self.info_dashboard = st.sidebar.text('Welcome *%s*' % (st.session_state['name']))
+            self.side_info_dashboard = st.sidebar.text('Welcome *%s*' % (st.session_state['name']))
             side_bar_admin = ['Rédiger votre texte du jour', 'Modifier votre texte du jour', 'Suivit des emotions', 'Ajouter un patient']
             side_bar_user = ['Rédiger votre texte du jour', 'Modifier votre texte du jour', 'Suivit des emotions']
             self.actual_username = st.session_state['username']
@@ -109,7 +108,7 @@ class Page:
                 st.success("texte updated with success")
             st.write('--------------------------------')
 
-    def df_all(self):
+    def display_data(self):
 
         if self.side_selection == 'Suivit des emotions':
             self.title = st.title('Consult texts and emotions passed')
@@ -130,11 +129,15 @@ class Page:
             self.title = st.title('Emotions pie and more')
             data = []
             if self.user_text :
+
+                # Make data to plot 
                 for text in self.user_text:
                     data.append({'emotion_predicted' : text.emotion_predicted, 'texte' : text.content, 'time' : text.time_created})
                 df = pd.DataFrame(data)
                 df_pie = df[['emotion_predicted','texte']]
                 df_pie['emotion_int'] =  df.emotion_predicted.apply(lambda x : emotion_int(x))
+
+                # Plot pie
                 df_pie = df_pie.groupby('emotion_predicted').count().reset_index()
                 fig1, ax1 = plt.subplots()
                 ax1.pie(df_pie.emotion_int, labels=df_pie.emotion_predicted, autopct='%1.1f%%',
@@ -143,7 +146,8 @@ class Page:
                 col_graph1, col_graph2 = st.columns(2)
                 with col_graph1:
                     st.pyplot(fig1)
-                st.write(df_pie)
+
+                # Plot hist 
                 arr = df.emotion_predicted
                 fig, ax = plt.subplots()
                 ax.hist(arr, bins=20)
@@ -152,16 +156,16 @@ class Page:
                     st.pyplot(fig)
             else:
                 st.write('Aucun texte enregistré pour le moment.')
-
-        st.markdown('by M.Zen coaching ')
+        
 
     def run_page(self):
         self.login_streamlit()
         self.instance_session()
         self.add_content()
         self.update_content()
-        self.df_all()
+        self.display_data()
         self.plot_graph()
+        st.markdown('by M.Zen coaching ')
 
 page = Page()
 page.run_page()
