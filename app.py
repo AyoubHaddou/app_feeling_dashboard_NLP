@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np 
 from sqlalchemy.orm import sessionmaker 
 from sqlalchemy import create_engine , update , func 
-from .models import User, Text 
+from models import User, Text 
 import datetime 
 from function import predict_data, make_engine_session, emotion_int
 import matplotlib.pyplot as plt
