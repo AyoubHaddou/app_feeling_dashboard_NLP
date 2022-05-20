@@ -16,7 +16,9 @@ II. Data sources :
     Data augmentation : https://data.world/crowdflower/sentiment-analysis-in-text
 
 
-III. API et base de données : lien : 
+III. API et base de données : 
+    lien repo : https://github.com/AyoubHaddou/API_feeling_dashboard_NLP
+    lien api deployed for prediction : 
 
 Un compte user 
 Un compte coach donnant acces aux visualisations des emotions de ses patients

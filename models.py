@@ -4,6 +4,8 @@ from sqlalchemy import Column, String, Integer, Float, ForeignKey, DateTime, Boo
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 from sqlalchemy.orm import sessionmaker 
+from function import predict_data
+import streamlit_authenticator as stauth 
 
 
 Base = declarative_base()
@@ -37,11 +39,35 @@ def conn():
 
 def init_db():
     sess = conn()
-    coach = User(name='John Smith', username="jsmith", password="123", is_coach=True)
-    patient = User(name='Rebecca Briggs', username='rbriggs', password='123', is_coach=False)
-    sess.add_all([coach, patient])
+    coach = User(name='John Smith', username="jsmith", password=stauth.Hasher(['123']).generate()[0], is_coach=True)
+    patient = User(name='Rebecca Briggs', username='rbriggs', password=stauth.Hasher(['123']).generate()[0], is_coach=False)
+    patient_2 = User(name='Rebecca Briggs2', username='rbriggs2', password=stauth.Hasher(['123']).generate()[0], is_coach=False)
+    sess.add_all([coach, patient, patient_2])
     sess.commit()
 
+    texte = []
+    texte.append("I love my new car! It's amazing")
+    texte.append("My car is now break.. I'm so sad")
+    texte.append("My car is fixed! I'm happy")
+    texte.append("I love my car. Brings me so much fun")
+    texte.append("I love my cat")
+    texte.append("It's so bad. My cat didn't back last night. I don't know here is he")
+    texte.append("I feel good. Cat is back and work is going better")
+    for day_texte in texte:
+        text = Text(content=day_texte, emotion_predicted=predict_data(day_texte), user_id=2)
+        sess.add(text)
+        sess.commit()
+
+    texte = []
+    texte.append("I'm scared.. I've not good relation with my boss.. If he fired me I will be alone.")
+    texte.append("I go at work with stomach.. Strange feel.")
+    texte.append("I fell in love with Eric")
+    texte.append("A little better today. My boss talk to me with kindness")
+    texte.append("My boss has very bad behavior. He is not passionate by his job.")
+    for day_texte in texte:
+        text = Text(content=day_texte, emotion_predicted=predict_data(day_texte), user_id=3)
+        sess.add(text)
+        sess.commit()
 
 
 if __name__ == '__main__':
