@@ -45,7 +45,7 @@ class Page:
 
         if (st.session_state['authentication_status'] == False) or (st.session_state['authentication_status'] == None) :
             with self.col2:
-                self.image_page = st.image('coach.gif')
+                self.image_page = st.image('./images/coach.gif')
             self.side_selection = st.sidebar.text('Please login')
             self.side_info_dashboard = st.sidebar.text('Free demo coach account \nUsername : jsmith \nPassword : 123 \n\nFree demo patient account : \nUsername : rbriggs \nPassword : 123')
             if st.session_state['authentication_status'] == False :
@@ -53,7 +53,7 @@ class Page:
 
         elif st.session_state['authentication_status']:
             with self.col2:
-                self.image_page = st.image('motivation.jpeg')
+                self.image_page = st.image('./images/motivation.jpeg')
             self.side_info_dashboard = st.sidebar.text('Welcome *%s*' % (st.session_state['name']))
             side_bar_admin = ['Suivit des emotions', 'Ajouter un patient', 'Tester votre IA']
             side_bar_user = ['Rédiger votre texte du jour', 'Modifier votre texte du jour', 'Suivit des emotions']
