@@ -6,7 +6,7 @@ En local il sufffira ensuite d'executer la commande : streamlit run app.py
 
 I. Application dashboard pour coach des sentiments 
 
-    Lien vers le site streamlit : https://share.streamlit.io/ayoubhaddou/app_feeling_dashboard_nlp/main/app.py
+    Lien vers le site streamlit : [Lien](https://share.streamlit.io/ayoubhaddou/app_feeling_dashboard_nlp/main/app.py)
 
 
 II. Data sources : 
