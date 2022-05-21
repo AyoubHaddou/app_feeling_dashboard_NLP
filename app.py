@@ -46,7 +46,7 @@ class Page:
 
         if (st.session_state['authentication_status'] == False) or (st.session_state['authentication_status'] == None) :
             with self.col2:
-                self.image_page = st.image('./images/doctor_nlp.jpeg')
+                self.image_page = st.image('./images/peace.jpg')
             self.side_selection = st.sidebar.text('Please login')
             self.side_info_dashboard = st.sidebar.text('Free demo coach account \nUsername : jsmith \nPassword : 123 \n\nFree demo patient account : \nUsername : rbriggs \nPassword : 123')
             if st.session_state['authentication_status'] == False :
