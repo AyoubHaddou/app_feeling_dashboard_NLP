@@ -36,6 +36,7 @@ class Page:
             names_all.append(user.name)
             usernames_all.append(user.username)
             hash_password_all.append(user.password)
+
         # Authentification    
         authenticator = stauth.Authenticate(names_all, usernames_all,hash_password_all,
                                             'some_cookie_name','some_signature_key',cookie_expiry_days=0)
@@ -55,7 +56,7 @@ class Page:
             with self.col2:
                 self.image_page = st.image('./images/motivation.jpeg')
             self.side_info_dashboard = st.sidebar.text('Welcome *%s*' % (st.session_state['name']))
-            side_bar_admin = ['Suivit des emotions', 'Ajouter un patient', 'Tester votre IA']
+            side_bar_admin = ['Suivit des emotions', 'Gestion des patients', 'Tester votre IA']
             side_bar_user = ['Rédiger votre texte du jour', 'Modifier votre texte du jour', 'Suivit des emotions']
             self.actual_username = st.session_state['username']
             check_a = self.sess.query(User).filter_by( username = self.actual_username, is_coach=True).first()
@@ -121,6 +122,7 @@ class Page:
                     choice_date_1 = st.date_input('A partir de :', value=datetime.datetime.strptime('2022-05-01', "%Y-%m-%d").date() )
                 with col_graph2:
                     choice_date_2 = st.date_input("Jusqu'à :" )
+                
                 if self.current_user.is_coach :
                     choice = st.selectbox('Choose your patient by id' , np.append("All", self.df_all.name.unique()))
                     if choice != "All":
@@ -166,7 +168,7 @@ class Page:
 
 
     def add_user(self):
-        if self.side_selection == 'Ajouter un patient':
+        if self.side_selection == 'Gestion des patients':
             col_graph1, col_graph2 = st.columns(2)
             with col_graph1:
                 st.subheader('Ajouter un patient')
@@ -184,12 +186,32 @@ class Page:
                         self.sess.commit()
                         st.success('Nouveau patient ajouté!')
             with col_graph2:
-                st.subheader('Liste des patients')
+                st.subheader('Supprimer un patient')
                 self.df_all = df_all(Text, User)
                 users = self.sess.query(User).filter_by(is_coach=False).all()
                 if users :
                     df_petient = self.df_all.groupby('name').count().reset_index()[['name','emotion_predicted']].rename(columns={'emotion_predicted':'text_counts'})
                     st.write(df_petient)
+                    patient_list = st.selectbox('Choisir un patient :', df_petient.name)
+                    check = st.checkbox(f"Yes I want to delete {patient_list}")
+                    to_delete = st.button('Delete')
+                    if check : 
+                        st.error(f"Do you really want to delete {patient_list} and all associated texts definitely ?")
+
+                    if to_delete and check :
+                        user = self.sess.query(User).filter(User.name == patient_list)
+                        if user and check:
+                            # Je supprime le users + les textes associés
+
+                            patient_to_delete = self.sess.query(User).filter(User.name == patient_list)
+                            id_patient_to_delete = patient_to_delete.first().id
+                            self.sess.query(Text).filter(Text.user_id == id_patient_to_delete).delete()
+                            patient_to_delete.delete()
+                            self.sess.commit()
+                            st.success('Patient deleted')
+                    elif to_delete and (check == False):
+                        st.error('Please confirm with checkbox')
+
                 else:
                     st.write('Aucun User enregistré pour le moment.')
 

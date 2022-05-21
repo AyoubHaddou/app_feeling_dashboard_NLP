@@ -45,6 +45,7 @@ def init_db():
     patient_2 = User(name='Henri Stylos', username='henri', password=stauth.Hasher(['123']).generate()[0], is_coach=False)
     sess.add_all([coach, patient, patient_2])
     sess.commit()
+    print('Users ajouté à la bdd')
 
     texte = []
     texte.append("I love my new car! It's amazing")
@@ -58,6 +59,7 @@ def init_db():
         text = Text(content=day_texte, emotion_predicted=predict_data(day_texte), user_id=2)
         sess.add(text)
         sess.commit()
+        print('Text ajouté à la bdd')
 
     texte = []
     texte.append("I'm scared.. I've not good relation with my boss.. If he fired me I will be alone.")
@@ -69,6 +71,7 @@ def init_db():
         text = Text(content=day_texte, emotion_predicted=predict_data(day_texte), user_id=3)
         sess.add(text)
         sess.commit()
+        print('Text ajouté à la bdd')
 
 if __name__ == '__main__':
     engine = create_engine('sqlite:///db/feeling_db.sqlite3')
