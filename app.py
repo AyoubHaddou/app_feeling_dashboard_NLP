@@ -145,7 +145,6 @@ class Page:
                 {
                     'text.usetex': False,
                     'font.family': 'stixgeneral',
-                    'mathtext.fontiset': 'stix',
                 }
             )
             self.title = st.title('Emotions pie and more')
