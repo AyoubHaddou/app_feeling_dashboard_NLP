@@ -140,6 +140,14 @@ class Page:
     def display_pie_hist(self):
 
         if self.side_selection == 'Suivit des emotions':
+            # Customize matplotlib
+            plt.rcParams.update(
+                {
+                    'text.usetex': False,
+                    'font.family': 'stixgeneral',
+                    'mathtext.fontset': 'stix',
+                }
+            )
             self.title = st.title('Emotions pie and more')
             data = []
             if self.user_text :
