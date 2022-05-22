@@ -12,7 +12,7 @@ II. Commande pour l'execution .
 - Si vous n'avez pas le fichier feeling_db.sqlite3 dans le sous répertoire db, il faudra executer la commande suivant à partir de la racine du repo : 
 pip install -r requirements.txt 
 - Enfin, en local il sufffira ensuite d'executer la commande : streamlit run app.py
-- Il faut s'assurer que l'api soit en route, sinon il faudra également run l'api en local (lien dans la partie III) pour profiter de toute les fonctionnalités du site.*
+- Si l'API n'est plus déployer Il faudra run l'api en local (lien dans la partie III) pour profiter de toute les fonctionnalités du site.*
 
 II. Application dashboard pour coach des sentiments 
 
@@ -20,7 +20,7 @@ II. Application dashboard pour coach des sentiments
 
 III. API et base de données : 
     lien repo : https://github.com/AyoubHaddou/API_feeling_dashboard_NLP
-    lien de l'api deployé : 
+    lien de l'api deployé : https://coach-life.herokuapp.com/
 
 IV. Entrainement du modèle : 
     Voir le colab notebook dans la section preprocessing, ou [clic ici](/preprocessing_model/preprocessing_models_NLP.ipynb)
