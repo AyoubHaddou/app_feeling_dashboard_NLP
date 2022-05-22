@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 
 def predict_data(data):
 
-    response = requests.post(f"https://coach-life.herokuapp.com/predict/?Data={data}")
+    response = requests.post(url="https://coach-life.herokuapp.com/predict/", data=data)
     return response.text
 
 
