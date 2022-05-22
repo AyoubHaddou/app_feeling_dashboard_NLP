@@ -53,8 +53,6 @@ class Page:
                 st.error('Please enter correct username and password')
 
         elif st.session_state['authentication_status']:
-            with self.col2:
-                self.image_page = st.image('./images/text_hero.png')
             self.side_info_dashboard = st.sidebar.text('Welcome *%s*' % (st.session_state['name']))
             side_bar_admin = ['Suivit des emotions', 'Gestion des patients', 'Tester votre IA']
             side_bar_user = ['Rédiger votre texte du jour', 'Modifier votre texte du jour', 'Suivit des emotions']
@@ -79,6 +77,8 @@ class Page:
     def add_content(self):
 
         if self.side_selection == 'Rédiger votre texte du jour':
+            with self.col2:
+                self.image_page = st.image('./images/text_hero.png')
             self.title = st.title('Your day text')
             self.WordOfDay = st.text_area('Rédiger votre texte du jour')
             button = st.button('Publier')
@@ -217,6 +217,8 @@ class Page:
 
     def test_pred(self):
         if self.side_selection == 'Tester votre IA':
+            with self.col2:
+                self.image_page = st.image('./images/text_hero.png')
             self.title = st.title('Prediction manuel')
             self.WordOfDay = st.text_area('Entrer un paragraphe à prédir')
             button = st.button('Publier')
