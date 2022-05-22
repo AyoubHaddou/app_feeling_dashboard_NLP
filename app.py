@@ -102,11 +102,12 @@ class Page:
             self.title = st.title('Day text modification')
             self.WordOfDay = st.text_area('Modifier votre texte du jour :')
             button = st.button('Publier')
-            if self.user_text :
+            date_now = datetime.datetime.now().day
+            if self.user_text and self.user_text[-1].time_created.day == int(date_now) :
                 st.write('Le message du jour modifiable est le suivant :')
                 st.warning(self.user_text[-1].content)
             else:
-                st.write('Aucun texte enregistré pour le moment.')
+                st.write('Aucun texte enregistré pour ce jour.')
             if button and self.WordOfDay :
                 self.sess.query(Text).filter(Text.user_id == self.current_user.id, Text.id == self.sess.query(func.max(Text.id))).update({"content" : self.WordOfDay, "emotion_predicted" :predict_data(self.WordOfDay) }, synchronize_session="fetch")
                 self.sess.commit()
