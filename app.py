@@ -62,6 +62,7 @@ class Page:
             check_a = self.sess.query(User).filter_by( username = self.actual_username, is_coach=True).first()
             check_b = self.sess.query(User).filter_by( username = self.actual_username, is_coach=False).first()
             self.df_all = df_all(Text, User)
+            self.df_all.emotion_predicted = self.df_all.emotion_predicted.str.replace('"'," ")
             if check_a :
                 self.current_user = check_a
                 self.user_text = self.sess.query(Text).all()
@@ -159,7 +160,7 @@ class Page:
                 df_pie = df_pie.groupby('emotion_predicted').count().reset_index()
                 fig1, ax1 = plt.subplots()
                 ax1.pie(df_pie.emotion_int, labels=df_pie.emotion_predicted, autopct='%1.1f%%',
-                        shadow=True, startangle=90)
+                        shadow=False, startangle=90)
                 ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
                 with col_graph1:
                     st.pyplot(fig1)         
@@ -225,8 +226,8 @@ class Page:
 
     def test_pred(self):
         if self.side_selection == 'Tester votre IA':
-            self.title = st.title('Prediction manuel')
-            self.WordOfDay = st.text_area('Entrer un paragraphe à prédir')
+            self.title = st.title('Prediction automatique')
+            self.WordOfDay = st.text_area('Predir une émotion à partir d\'un texte :')
             button = st.button('Publier')
             if button :
                 st.success(f"Sentiment prédit par l'IA : {predict_data(self.WordOfDay)}")
