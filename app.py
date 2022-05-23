@@ -230,7 +230,7 @@ class Page:
             self.WordOfDay = st.text_area('Predir une émotion à partir d\'un texte :')
             button = st.button('Publier')
             if button :
-                st.success(f"Sentiment prédit par l'IA : {predict_data(self.WordOfDay)}")
+                st.success(f"Emotion predicted : {eval(predict_data(self.WordOfDay))}")
             
     def run_page(self):
         self.login_streamlit()
