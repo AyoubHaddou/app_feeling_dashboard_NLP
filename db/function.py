@@ -4,7 +4,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker 
 
-def predict_data(data):
+async def predict_data(data):
 
     response = requests.post(url=f"https://coach-life.herokuapp.com/predict/?data={data}")
     return response.text
