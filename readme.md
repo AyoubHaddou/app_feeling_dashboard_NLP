@@ -9,8 +9,10 @@ II. Commande pour l'execution .
 
 *Si necessaire après un git clone :
 - la première étape consiste à lancer la commande : 
+
     - pip install -r requirements.txt. 
 - Si vous n'avez pas le fichier feeling_db.sqlite3 dans le sous répertoire db, il faudra executer la commande suivant à partir de la racine du repo : 
+
     - python db/models.py 
 
 - Enfin, en local il sufffira ensuite d'executer la commande : streamlit run app.py
