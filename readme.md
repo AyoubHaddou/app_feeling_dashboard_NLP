@@ -10,7 +10,9 @@ II. Commande pour l'execution .
 *Si necessaire après un git clone :
 - la première étape consiste à lancer la commande : pip install -r requirements.txt. 
 - Si vous n'avez pas le fichier feeling_db.sqlite3 dans le sous répertoire db, il faudra executer la commande suivant à partir de la racine du repo : 
+
 python db/models.py 
+
 - Enfin, en local il sufffira ensuite d'executer la commande : streamlit run app.py
 - Si l'API n'est plus déployer Il faudra run l'api en local (lien dans la partie III) pour profiter de toute les fonctionnalités du site.*
 
@@ -19,8 +21,9 @@ II. Application dashboard pour coach des sentiments
 - Voici le lien vers l'application streamlit : https://share.streamlit.io/ayoubhaddou/app_feeling_dashboard_nlp/main/app.py
 
 III. API et base de données : 
+
     - lien repo : https://github.com/AyoubHaddou/API_feeling_dashboard_NLP
-    
+
     - lien de l'api deployé : https://coach-life.herokuapp.com/
 
 IV. Entrainement du modèle : 
