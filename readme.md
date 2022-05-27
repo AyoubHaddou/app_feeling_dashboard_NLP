@@ -19,8 +19,8 @@ II. Application dashboard pour coach des sentiments
 - Voici le lien vers l'application streamlit : https://share.streamlit.io/ayoubhaddou/app_feeling_dashboard_nlp/main/app.py
 
 III. API et base de données : 
-    lien repo : https://github.com/AyoubHaddou/API_feeling_dashboard_NLP
-    lien de l'api deployé : https://coach-life.herokuapp.com/
+    - lien repo : https://github.com/AyoubHaddou/API_feeling_dashboard_NLP
+    - lien de l'api deployé : https://coach-life.herokuapp.com/
 
 IV. Entrainement du modèle : 
     Voir le colab notebook dans la section preprocessing, ou [clic ici](/preprocessing_model/preprocessing_models_NLP.ipynb)
