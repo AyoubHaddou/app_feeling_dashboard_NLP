@@ -20,6 +20,7 @@ II. Application dashboard pour coach des sentiments
 
 III. API et base de données : 
     - lien repo : https://github.com/AyoubHaddou/API_feeling_dashboard_NLP
+    
     - lien de l'api deployé : https://coach-life.herokuapp.com/
 
 IV. Entrainement du modèle : 
