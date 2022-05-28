@@ -9,7 +9,6 @@ from db.models import User, Text
 import datetime 
 from db.function import predict_data, make_engine_session, emotion_int, df_all
 import matplotlib.pyplot as plt
-from st_aggrid import AgGrid
 
 @dataclass 
 class Page:
@@ -130,13 +129,13 @@ class Page:
                     choice = st.selectbox('Choose your patient by id' , np.append("All", self.df_all.name.unique()))
                     if choice != "All":
                         self.df_all = self.df_all[(self.df_all.time >= str(choice_date_1)) & (self.df_all.time <= str(choice_date_2)) & (self.df_all.name == choice)]
-                        AgGrid(self.df_all.drop('user_id', axis=1), theme='fresh')
+                        st.write(self.df_all.drop('user_id', axis=1))
                     else:
                         self.df_all = self.df_all[(self.df_all.time >= str(choice_date_1)) & (self.df_all.time <= str(choice_date_2))]
-                        AgGrid(self.df_all.drop('user_id', axis=1), theme='fresh')
+                        st.write(self.df_all.drop('user_id', axis=1))
                 else:
                     self.df_all = self.df_all[(self.df_all.time >= str(choice_date_1)) & (self.df_all.time <= str(choice_date_2)) & (self.df_all.name == self.current_user.name)]
-                    AgGrid(self.df_all.drop('user_id', axis=1), theme='fresh')
+                    st.write(self.df_all.drop('user_id', axis=1))
             else:
                 st.write('Aucun texte enregistré pour le moment.')
 
@@ -201,7 +200,7 @@ class Page:
                 users = self.sess.query(User).filter_by(is_coach=False).all()
                 if users :
                     df_petient = self.df_all.groupby('name').count().reset_index()[['name','emotion_predicted']].rename(columns={'emotion_predicted':'text_counts'})
-                    AgGrid(df_petient, theme='dark', height=200)
+                    st.write(df_petient)
                     patient_list = st.selectbox('Choisir un patient :', df_petient.name)
                     check = st.checkbox(f"Yes I want to delete {patient_list}")
                     to_delete = st.button('Delete')
