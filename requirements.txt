@@ -2,6 +2,7 @@ dataclasses
 streamlit 
 streamlit_authenticator
 streamlit-aggrid
+st_aggrid
 pandas
 pysqlite3
 requests
