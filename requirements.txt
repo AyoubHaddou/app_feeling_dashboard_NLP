@@ -1,7 +1,6 @@
 dataclasses
 streamlit 
 streamlit_authenticator
-st_aggrid
 pandas
 pysqlite3
 requests
@@ -9,3 +8,4 @@ numpy
 matplotlib
 sqlalchemy
 datetime
+streamlit_aggrid=0.2.3.post2
