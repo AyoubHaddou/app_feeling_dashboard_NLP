@@ -1,6 +1,6 @@
 dataclasses
 streamlit 
-streamlit_authenticator
+streamlit_authenticator==0.1.5
 pandas
 pysqlite3
 requests

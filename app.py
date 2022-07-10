@@ -39,7 +39,7 @@ class Page:
 
         # Authentification    
         authenticator = stauth.Authenticate(names_all, usernames_all,hash_password_all,
-                                            'some_cookie_name','some_signature_key',cookie_expiry_days=1)
+                                            'some_cookie_name','some_signature_key',cookie_expiry_days=30)
         authenticator.login('Login','main')
 
     def instance_session(self):
